@@ -1,6 +1,6 @@
 <h1 align="center" id="title">h2mLabOS</h1>
 
-<p align="center"><img src="projectimagehere" alt="project-image"></p>
+<p align="center"><img src="pictures/h2mlogo.jpg" width ="200" height ="200" alt="project-image"></p>
 
 <p id="description">Ansible-configured Homelab with single-node k3s cluster inside a Proxmox VM.
 </p>
