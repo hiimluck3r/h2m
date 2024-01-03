@@ -1,0 +1,8 @@
+[master]
+
+[worker]
+
+[cluster]
+localhost
+
+[wings]
