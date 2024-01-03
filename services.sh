@@ -51,6 +51,9 @@ display_checklist() {
             sed -i "s/$each: [^ ]*/$each: OFF/" config/services.yaml
         fi
     done
+    
+    sed 's/ON.*/ON/' config/services.yaml > group_vars/all/all_services.yaml
+    sed -i 's/OFF.*/OFF/' group_vars/all/all_services.yaml
 }
 
 display_checklist
