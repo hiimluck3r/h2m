@@ -52,8 +52,8 @@ display_checklist() {
         fi
     done
     
-    sed 's/ON.*/ON/' config/services.yaml > group_vars/all/all_services.yaml
-    sed -i 's/OFF.*/OFF/' group_vars/all/all_services.yaml
+    sed 's/ON.*/ON/' config/services.yaml > group_vars/all/all_services.yml
+    sed -i 's/OFF.*/OFF/' group_vars/all/all_services.yml
 }
 
 display_checklist
