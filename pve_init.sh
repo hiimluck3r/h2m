@@ -1,12 +1,12 @@
 #!/bin/bash
 
 echo "Marking enterprise source files as .old"
-mv /etc/apt/source.list.d/ceph.list /etc/apt/source.list.d/.old_ceph.list
+mv /etc/apt/sources.list.d/ceph.list /etc/apt/sources.list.d/.old_ceph.list
 mv /etc/apt/sources.list.d/pve-enterprise.list /etc/apt/sources.list.d/.old_pve-enterprise.list
 
 echo "Copying new source files"
-cp /config/ceph.list /etc/apt/source.list.d/ceph.list
-cp /config/pve-enterprise.list /etc/apt/sources.list.d/pve-enterprise.list
+cp config/ceph.list /etc/apt/sources.list.d/ceph.list
+cp config/pve-enterprise.list /etc/apt/sources.list.d/pve-enterprise.list
 echo "deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription" >> /etc/apt/sources.list
 
 apt update && apt -y dist-upgrade
