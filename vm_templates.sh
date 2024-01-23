@@ -13,7 +13,7 @@ read USERNAME
 echo "Enter your password: "
 read PASSWORD
 
-FILESYSTEM = $(grep "path /var/lib/pve/" /etc/pve/storage.cfg | sed 's|^.*/||')
+FILESYSTEM=$(grep "path /var/lib/pve/" /etc/pve/storage.cfg | sed 's|^.*/||')
 
 # Function to create a cloud-init template for a VM
 create_cloud_init_template() {
