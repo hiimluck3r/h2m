@@ -1,6 +1,9 @@
 #!/bin/bash
+echo "Downloading default enterprise-source files"
+curl https://raw.githubusercontent.com/hiimluck3r/h2m/dev/config/ceph.list --create-dirs -o config/ceph.list
+curl https://raw.githubusercontent.com/hiimluck3r/h2m/dev/config/pve-enterprise.list --create-dirs -o config/pve-enterprise.list
 
-echo "Marking enterprise source files as .old"
+echo "Marking existing enterprise source files as .old"
 mv /etc/apt/sources.list.d/ceph.list /etc/apt/sources.list.d/.old_ceph.list
 mv /etc/apt/sources.list.d/pve-enterprise.list /etc/apt/sources.list.d/.old_pve-enterprise.list
 
