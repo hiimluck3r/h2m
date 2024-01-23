@@ -145,4 +145,3 @@ password: {password}
 vault_encrypt = subprocess.call(["ansible-vault", "encrypt", "group_vars/all/vault.yml"])
 
 print("Don't forget this password since it's the only way of decrypting secrets you provided before.")
-print("---\nAll set up, now use './services.sh' to configure services you want to install on your k3 cluster.")
