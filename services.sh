@@ -5,7 +5,7 @@ services=()
 
 WIDTH=10
 
-# Extract and clear information from "config/services.yaml"
+# Extract and clear information from "config/services.yml"
 extract_info() {
     line="$1"
     servicename=$(echo "$line" | cut -d ':' -f 1)
@@ -25,14 +25,14 @@ extract_info() {
     
 }
 
-# Read information from "config/services.yaml"
+# Read information from "config/services.yml"
 read_services() {
     # Read the file line by line
     options=()
     services=()
     while IFS= read -r line; do
         extract_info "$line"
-    done < config/services.yaml
+    done < config/services.yml
 }
 
 # Display menu
@@ -46,14 +46,14 @@ display_checklist() {
 
     for each in "${services[@]}"; do
         if [[ ${choices[@]} =~ $each ]]; then
-            sed -i "s/$each: [^ ]*/$each: ON/" config/services.yaml
+            sed -i "s/$each: [^ ]*/$each: ON/" config/services.yml
         else
-            sed -i "s/$each: [^ ]*/$each: OFF/" config/services.yaml
+            sed -i "s/$each: [^ ]*/$each: OFF/" config/services.yml
         fi
     done
     
-    sed 's/ON.*/ON/' config/services.yaml > group_vars/all/all_services.yml
-    sed -i 's/OFF.*/OFF/' group_vars/all/all_services.yml
+    sed 's/ON.*/ON/' config/services.yml > group_vars/all/services.yml
+    sed -i 's/OFF.*/OFF/' group_vars/all/services.yml
 }
 
 display_checklist
