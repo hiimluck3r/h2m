@@ -16,8 +16,7 @@ apt update && apt -y dist-upgrade
 
 apt install -y ethtool htop net-tools sudo tree vim nano curl wget git lm-sensors s-tui
 
-sed -Ezi.bkp "s/(Ext.Msg.show
-\(\{\s+title: gettext\('No valid sub)/void\(\{ \/\/\1/g" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js && systemctl restart pveproxy.service
+sed -Ezi.bak "s/(Ext.Msg.show\(\{\s+title: gettext\('No valid sub)/void\(\{ \/\/\1/g" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js && systemctl restart pveproxy.service
 
 echo -e "GENERATING PVE DEFAULT KEY\n"
 
@@ -26,3 +25,6 @@ ssh-keygen -t ed25519 -C "PVE DEFAULT"
 echo -e "GENERATING ANSIBLE KEY, DO NOT FORGET TO LOCATE IT AT /root/.ssh/ansible, DO NOT SET THE PASSPHRASE!"
 
 ssh-keygen -t ed25519 -C "ansible"
+
+rm pve_init.sh
+rm -r config/
