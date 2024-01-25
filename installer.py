@@ -36,20 +36,13 @@ if confirmation != "y":
     exit()
 
 while True:
-    k3version = input("Will you use k3s or k3d? (k3s/k3d): ")
-    if k3version in ["k3d", "k3s"]:
-        break
-    else:
-        print('Use "k3s" or "k3d" as an answer string.')
-
-while True:
     print("""
     ***
     Single-node: master and worker are on the same node
     Multi-node: master and worker have different nodes
     ***
     """)
-    cluster_mode = input("Will the cluster be single-node or multi-node? (s/m): ")
+    cluster_mode = input("Will the k3s cluster be single-node or multi-node? (s/m): ")
     if cluster_mode in ["s", "m"]:
         break
     else:
@@ -58,60 +51,55 @@ while True:
 master_nodes = []
 worker_nodes = []
 ptero_nodes = []
-singlenode = ""
+singlenode = [] #dumb, bad idea, but it works
 
-if cluster_mode == 'm':
+if cluster_mode == "s":
+    singlenode.append(input("Enter the IP of the cluster node: "))
+else:
     while True:
         try:
-            master_node_count = int(input("How many master nodes will you use? (Preferably 1 or 3): "))
-            if master_node_count <= 0:
-                raise Exception("You can't create a cluster without master-nodes")
-            print("Enter master-nodes IPs:")
-            for i in range(master_node_count):
-                master_nodes.append(input(f"Master-node ({i}): "))
-            break
+            master_nodes_amount = int(input("How many master nodes do you want? Enter odd number: "))
+            if (master_nodes_amount%2 == 0) or (master_nodes_amount <= 0):
+                print(f"The amount of master nodes cannot equal to {master_nodes_amount}. Odd number of nodes is required for quorum.")
+            else:
+                for i in range(master_nodes_amount):
+                    master_nodes.append(input(f"{i+1}. Enter the IP of master node: "))
+                break
         except Exception as e:
-            print(f"Found an exception at the master-node creation: {e}\n")
+            print(f"Exception found at the master node creation: {e}")
+            exit()
     
     while True:
         try:
-            worker_node_count = int(input("How many worker nodes will you use?: "))
-            if worker_node_count <= 0:
-                raise Exception("You can't create a cluster without worker-nodes")
-            print("Enter worker-nodes IPs:")
-            for i in range(worker_node_count):
-                worker_nodes.append(input(f"Worker-node ({i}): "))
-            break
+            worker_nodes_amount = int(input("How many worker nodes do you want: "))
+            if (worker_nodes_amount <= 0):
+                print(f"The amount of worker nodes cannot be equal to {worker_nodes_amount}.")
+            else:
+                for i in range(worker_nodes_amount):
+                    worker_nodes.append(input(f"{i+1}. Enter the IP of worker node: "))
+                break
         except Exception as e:
-            print(f"Found an exception at the worker-node creation: {e}\n")
+            print(f"Exception found at the worker node creation: {e}")
+            exit()
 
-    while True:
-        try:
-            ptero_node_count = int(input("How many pterodactyl nodes (wings) will you use?: "))
-            if worker_node_count < 0:
-                raise Exception("You can't create a cluster with ptero-nodes below zero")
-            elif worker_node_count > 0:
-                print("Enter ptero-nodes IPs:")
-            for i in range(worker_node_count):
-                worker_nodes.append(input(f"Ptero-node ({i}): "))
-            break
-        except Exception as e:
-            print(f"Found an exception at the ptero-node creation: {e}\n")
+while True:
+    try:
+        ptero_nodes_amount = int(input("How many ptero nodes do you want: "))
+        for i in range(ptero_nodes_amount):
+            ptero_nodes.append(f"{i+1}. Enter the IP of ptero node: ")
+        break
+    except Exception as e:
+        print(f"Exception found at the ptero node creation: {e}")
+        exit()
 
-else:
-    singlenode = input("Enter kubernetes-node IP: ")
-    while True:
-        try:
-            ptero_node_count = int(input("How many pterodactyl nodes (wings) will you use?: "))
-            if ptero_node_count < 0:
-                raise Exception("You can't create a cluster with ptero-nodes below zero")
-            elif ptero_node_count > 0:
-                print("Enter ptero-nodes IPs:")
-            for i in range(ptero_node_count):
-                ptero_nodes.append(input(f"Ptero-node ({i}): "))
-            break
-        except Exception as e:
-            print(f"Found an exception at the ptero-node creation: {e}\n")
+cp_vip = "" #Control-plane Virtual IP
+if len(master_nodes) > 1:
+    cp_vip = input("Enter free IP that will be used for Control-Plane LoadBalancer. It must be different from the IPs you entered above: ")
+
+#Service LoadBalancer IP range
+svclb_range = input("Enter IP range for services (example: 192.168.0.10-192.168.0.20): ")
+
+newline = '\n'
 
 print("""
 ---
@@ -127,17 +115,31 @@ with open("inventory", "w") as inv_file:
     for each in worker_nodes:
         inv_file.write(f"{each}\n")
     
-    inv_file.write(f"\n[cluster]\n{singlenode}\n")
+    inv_file.write(f"\n[cluster]\n")
+    for each in singlenode:
+        inv_file.write(f"{each}\n")
 
     inv_file.write(f"\n[wings]\n")
     for each in ptero_nodes:
         inv_file.write(f"{each}\n")
 
+    inv_file.write(f"""\n[k3c:children]
+master
+worker
+cluster
+""")
+
+with open("group_vars/all/h2mcfg.yml", 'w') as sys_file:
+    sys_file.write(f"""---
+master_nodes: {master_nodes_amount}
+cp_vip: {cp_vip} #Control-plane Virtual IP
+svclb_range: {svclb_range} #Service LoadBalancer IP range
+domain: {domain}
+user: {user}
+""")
+
 with open("group_vars/all/vault.yml", 'w') as sys_file:
     sys_file.write(f"""---
-k3v: {k3version}
-user: {user}
-domain: {domain}
 email: {email}
 password: {password}
 """)

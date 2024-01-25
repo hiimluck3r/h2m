@@ -1,4 +1,5 @@
-nextcloud: OFF
+---
+nextcloud: ON
 mailu: OFF
 codeserver: OFF
 calibre: OFF

@@ -1,8 +1,17 @@
 [master]
+192.168.0.2
+192.168.0.3
+192.168.0.4
 
 [worker]
+192.168.0.5
+192.168.0.6
 
 [cluster]
-localhost
 
 [wings]
+
+[k3c:children]
+master
+worker
+cluster

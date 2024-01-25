@@ -52,7 +52,8 @@ display_checklist() {
         fi
     done
     
-    sed 's/ON.*/ON/' config/services.yml > group_vars/all/services.yml
+    echo "---" > group_vars/all/services.yml
+    sed 's/ON.*/ON/' config/services.yml >> group_vars/all/services.yml
     sed -i 's/OFF.*/OFF/' group_vars/all/services.yml
 }
 
