@@ -97,7 +97,7 @@ if len(master_nodes) > 1:
     cp_vip = input("Enter free IP that will be used for Control-Plane LoadBalancer. It must be different from the IPs you entered above: ")
 
 #Service LoadBalancer IP range
-svclb_range = input("Enter IP range for services (example: 192.168.0.10-192.168.0.20): ")
+cidr_default = input("Enter CIDR-based IP range (192.168.0.10/29 where /29 is subnet mask 255.255.255.248): ")
 
 newline = '\n'
 
@@ -133,7 +133,7 @@ with open("group_vars/all/h2mcfg.yml", 'w') as sys_file:
     sys_file.write(f"""---
 master_nodes: {master_nodes_amount}
 cp_vip: {cp_vip} #Control-plane Virtual IP
-svclb_range: {svclb_range} #Service LoadBalancer IP range
+cidr_default: {cidr_default} #CIDR-based kube-vip LoadBalancer IP range
 domain: {domain}
 user: {user}
 """)

@@ -1,4 +1,4 @@
-nextcloud: ON | Cloud-suite
+nextcloud: OFF | Cloud-suite
 mailu: OFF | Mail-server
 codeserver: OFF | web-VSCode
 calibre: OFF | Ebook-Library
