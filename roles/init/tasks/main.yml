@@ -1,0 +1,5 @@
+---
+# tasks file for init
+- name: Configurate single-node k3s cluster
+  ansible.builtin.import_tasks:
+    file: cluster_init.yml

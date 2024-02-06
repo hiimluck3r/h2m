@@ -51,10 +51,10 @@ while True:
 master_nodes = []
 worker_nodes = []
 ptero_nodes = []
-singlenode = [] #dumb, bad idea, but it works
+singlenode = ""
 
 if cluster_mode == "s":
-    singlenode.append(input("Enter the IP of the cluster node: "))
+    singlenode = input("Enter the IP of the cluster node: ")
 else:
     while True:
         try:
@@ -86,7 +86,7 @@ while True:
     try:
         ptero_nodes_amount = int(input("How many ptero nodes do you want: "))
         for i in range(ptero_nodes_amount):
-            ptero_nodes.append(f"{i+1}. Enter the IP of ptero node: ")
+            ptero_nodes.append(input(f"{i+1}. Enter the IP of ptero node: "))
         break
     except Exception as e:
         print(f"Exception found at the ptero node creation: {e}")
@@ -106,32 +106,34 @@ print("""
 Creating ansible-inventory
 """)
 
+#I want to refactor it so badly
+#Please, try to implement newline with jinja-ish templating using f-strings
 with open("inventory", "w") as inv_file:
-    inv_file.write("[master]\n")
-    for each in master_nodes:
-        inv_file.write(f"{each}\n")
-    
-    inv_file.write("\n[worker]\n")
-    for each in worker_nodes:
-        inv_file.write(f"{each}\n")
-    
-    inv_file.write(f"\n[cluster]\n")
-    for each in singlenode:
-        inv_file.write(f"{each}\n")
+    inv_file.write(f"""[leader]
+{master_nodes[0] if len(master_nodes)!=0 else ""}
 
-    inv_file.write(f"\n[wings]\n")
-    for each in ptero_nodes:
-        inv_file.write(f"{each}\n")
+[quorum]
+{newline.join(master_nodes[1::])}
 
-    inv_file.write(f"""\n[k3c:children]
+[master]
+leader
+quorum
+
+[cluster]
+{singlenode}
+
+[worker]
+{newline.join(worker_nodes)}
+
+[ptero]
+{newline.join(ptero_nodes)}
+
+[k3c:children]
 master
-worker
-cluster
-""")
+cluster""")
 
 with open("group_vars/all/h2mcfg.yml", 'w') as sys_file:
     sys_file.write(f"""---
-master_nodes: {master_nodes_amount}
 cp_vip: {cp_vip} #Control-plane Virtual IP
 cidr_default: {cidr_default} #CIDR-based kube-vip LoadBalancer IP range
 domain: {domain}

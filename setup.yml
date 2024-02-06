@@ -1,9 +1,11 @@
 ---
 - hosts: cluster
-  user: {{ user }}
+  #user: "{{ user }}"
   become: true
-  become_method: su
-  become_user: {{ root }}
-  roles:
-    - cluster
+  
+  pre_tasks:
+    - name: Populate service facts
+      ansible.builtin.service_facts:
 
+  roles:
+    - init

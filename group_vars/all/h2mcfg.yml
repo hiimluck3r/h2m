@@ -1,6 +1,5 @@
 ---
-master_nodes: 3
-cp_vip: 192.168.0.7 #Control-plane Virtual IP
-cidr_default: 192.168.0.10 #Service LoadBalancer IP range
+cp_vip: 192.168.0.9 #Control-plane Virtual IP
+cidr_default: 192.168.0.10/29 #CIDR-based kube-vip LoadBalancer IP range
 domain: h2m
 user: h2m

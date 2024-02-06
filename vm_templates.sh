@@ -47,16 +47,16 @@ while true
             #single-noded vm templates creation
             cat /root/.ssh/id_ed25519.pub /root/.ssh/ansible.pub >> sshkeys.pub
             create_cloud_init_template 2000 6144 3 "k3s-cluster-template" $USERNAME $PASSWORD
-            create_cloud_init_template 2001 6144 2 "ptero-wings-template" $USERNAME $PASSWORD
+            create_cloud_init_template 2001 8192 2 "ptero-wings-template" $USERNAME $PASSWORD
             rm -f sshkeys.pub
             break
 
         elif [ $clustermode = "m" ]; then
             #multi-noded vm templates creation
             cat /root/.ssh/id_ed25519.pub /root/.ssh/ansible.pub >> sshkeys.pub
-            create_cloud_init_template 2000 2048 1 "k3s-master-template" $USERNAME $PASSWORD
+            create_cloud_init_template 2000 3072 1 "k3s-master-template" $USERNAME $PASSWORD
             create_cloud_init_template 2001 6144 3 "k3s-worker-template" $USERNAME $PASSWORD
-            create_cloud_init_template 2002 6144 2 "ptero-wings-template" $USERNAME $PASSWORD
+            create_cloud_init_template 2002 8192 2 "ptero-wings-template" $USERNAME $PASSWORD
             rm -f sshkeys.pub
             break
         
