@@ -3,7 +3,6 @@
   command: "which k3sup"
   register: k3sup_res
   
-
 - name: Print k3sup_res.rc
   debug:
     msg: "{{ k3sup_res.rc }}"
@@ -14,15 +13,16 @@
     - "curl -sLS https://get.k3sup.dev | sh"
     - "sudo install k3sup /usr/local/bin/" 
   failed_when: k3sup_res.rc == 0
-  ignore_errors: true #why doesn't it work
+  ignore_errors: true
 
 - name: Create a k3s cluster
   shell: "{{ item }}"
   with_list:
     - "k3sup install --local --user {{ user }} --no-extras"
     - "sudo chmod 644 /etc/rancher/k3s/k3s.yaml"
+    - "cp ./kubeconfig $HOME/.kube/config"
     - "sudo chmod 644 $HOME/.kube/config"
-    - "sudo chown $HOME/.kube/config"
+    - "sudo chown {{ user }}:{{ user }} $HOME/.kube/config"
 
-- name: Check if cluster is ready #remake since kubectl get nodes can't connect
+- name: Check if cluster is ready
   shell: "k3sup ready"
