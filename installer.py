@@ -99,6 +99,8 @@ if len(master_nodes) > 1:
 #Service LoadBalancer IP range
 cidr_default = input("Enter CIDR-based IP range (192.168.0.10/29 where /29 is subnet mask 255.255.255.248): ")
 
+kube_vip_interface = input("Enter network inteface that KubeVip will bind to:")
+
 newline = '\n'
 
 print("""
@@ -138,6 +140,7 @@ cp_vip: {cp_vip} #Control-plane Virtual IP
 cidr_default: {cidr_default} #CIDR-based kube-vip LoadBalancer IP range
 domain: {domain}
 user: {user}
+kube_vip_interface: "{kube_vip_interface}"
 """)
 
 with open("group_vars/all/vault.yml", 'w') as sys_file:
