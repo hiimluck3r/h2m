@@ -1,20 +1,7 @@
 ---
 nextcloud: false
-mailu: false
-codeserver: false
 calibre: false
-jellyfin: false
-jackett: false
-sonarr: false
-radarr: false
-lidarr: false
-bazarr: false
-qbittorrent: false
-gitlab: false
-gitlab_runner: false
-gitea: false
-telegram-api: false
 linkstack: false
 ghost: false
-pterodactyl: false
 nginx: false
+apache: false

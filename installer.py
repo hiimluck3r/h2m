@@ -50,7 +50,6 @@ while True:
 
 master_nodes = []
 worker_nodes = []
-ptero_nodes = []
 singlenode = ""
 
 if cluster_mode == "s":
@@ -81,16 +80,6 @@ else:
         except Exception as e:
             print(f"Exception found at the worker node creation: {e}")
             exit()
-
-while True:
-    try:
-        ptero_nodes_amount = int(input("How many ptero nodes do you want: "))
-        for i in range(ptero_nodes_amount):
-            ptero_nodes.append(input(f"{i+1}. Enter the IP of ptero node: "))
-        break
-    except Exception as e:
-        print(f"Exception found at the ptero node creation: {e}")
-        exit()
 
 cp_vip = "" #Control-plane Virtual IP
 if len(master_nodes) > 1:
@@ -126,9 +115,6 @@ quorum
 
 [worker]
 {newline.join(worker_nodes)}
-
-[ptero]
-{newline.join(ptero_nodes)}
 
 [k3c:children]
 master
