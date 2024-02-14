@@ -1,0 +1,1 @@
+ansible-playbook -i inventory --ask-become-pass playbooks/destroy.yml

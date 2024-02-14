@@ -1,0 +1,24 @@
+---
+- hosts: k3c
+  tasks:
+    - name: Check if k3s exists on master nodes
+      shell: test -f /usr/local/bin/k3s-uninstall.sh
+      register: file_status
+      ignore_errors: true
+
+    - name: Delete k3s from master nodes
+      shell: /usr/local/bin/k3s-uninstall.sh
+      failed_when: file_status.rc == 1
+      ignore_errors: true
+
+- hosts: worker
+  tasks:
+    - name: Check if k3s exists on worker nodes
+      shell: test -f /usr/local/bin/k3s-agent-uninstall.sh
+      register: file_status
+      ignore_errors: true
+
+    - name: Delete k3s from worker nodes
+      shell: /usr/local/bin/k3s-agent-uninstall.sh
+      failed_when: file_status.rc == 1
+      ignore_errors: true

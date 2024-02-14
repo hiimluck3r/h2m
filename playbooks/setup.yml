@@ -1,6 +1,5 @@
 ---
 - hosts: cluster #change to all
-  #user: "{{ user }}"
   
   pre_tasks:
     - name: Populate service facts
