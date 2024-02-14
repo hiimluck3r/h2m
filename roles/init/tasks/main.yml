@@ -3,3 +3,22 @@
 - name: Configurate single-node k3s cluster
   ansible.builtin.import_tasks:
     file: cluster_init.yml
+  when: inventory_hostname in groups["cluster"]
+
+- name: Apply kube-vip-cloud-provider on single-node cluster
+  kubernetes.core.k8s:
+    state: present
+    src: https://raw.githubusercontent.com/kube-vip/kube-vip-cloud-provider/main/manifest/kube-vip-cloud-controller.yaml
+  when: inventory_hostname in groups["cluster"] #switch to k3c
+
+- name: Apply ConfigMap with CIDR IP range for kube-vip-cloud-provider
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: kubevip
+        namespace: kube-system
+      data:
+        cidr-global: "{{ cidr_global }}"

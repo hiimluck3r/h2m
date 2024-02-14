@@ -1,10 +1,22 @@
 ---
-- hosts: cluster
+- hosts: cluster #change to all
   #user: "{{ user }}"
   
   pre_tasks:
     - name: Populate service facts
       ansible.builtin.service_facts:
+    
+    - name: Install python3-pip
+      ansible.builtin.apt:
+        name: "python3-pip"
+        state: present
+
+    - name: Install pre-requisites
+      ansible.builtin.pip:
+        name:
+          - kubernetes
+          - pyyaml
+          - jsonpatch
 
   roles:
     - init

@@ -1,5 +1,7 @@
 ---
-cp_vip: 192.168.0.9 #Control-plane Virtual IP
-cidr_default: 192.168.0.10/29 #CIDR-based kube-vip LoadBalancer IP range
-domain: h2m
+cp_vip:  #Control-plane Virtual IP
+cidr_global: 192.168.0.200/29 #CIDR-based kube-vip LoadBalancer IP range
+domain: example.com
 user: h2m
+kube_vip_interface: eth0
+kube_vip_version: v0.6.4

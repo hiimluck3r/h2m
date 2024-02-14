@@ -1,24 +1,18 @@
 [leader]
-192.168.0.2
+
 
 [quorum]
-192.168.0.3
-192.168.0.4
+
 
 [master]
 leader
 quorum
 
 [cluster]
-
+192.168.0.27
 
 [worker]
-192.168.0.5
-192.168.0.6
 
-[ptero]
-192.168.0.7
-192.168.0.8
 
 [k3c:children]
 master

@@ -86,9 +86,9 @@ if len(master_nodes) > 1:
     cp_vip = input("Enter free IP that will be used for Control-Plane LoadBalancer. It must be different from the IPs you entered above: ")
 
 #Service LoadBalancer IP range
-cidr_default = input("Enter CIDR-based IP range (192.168.0.10/29 where /29 is subnet mask 255.255.255.248): ")
+cidr_global = input("Enter CIDR-based IP range (192.168.0.10/29 where /29 is subnet mask 255.255.255.248): ")
 
-kube_vip_interface = input("Enter network inteface that KubeVip will bind to:")
+kube_vip_interface = input("Enter network inteface that KubeVip will bind to: ")
 
 newline = '\n'
 
@@ -123,11 +123,12 @@ cluster""")
 with open("group_vars/all/h2mcfg.yml", 'w') as sys_file:
     sys_file.write(f"""---
 cp_vip: {cp_vip} #Control-plane Virtual IP
-cidr_default: {cidr_default} #CIDR-based kube-vip LoadBalancer IP range
+cidr_global: {cidr_global} #CIDR-based kube-vip LoadBalancer IP range
 domain: {domain}
 user: {user}
-kube_vip_interface: "{kube_vip_interface}"
-""")
+kube_vip_interface: {kube_vip_interface}
+kube_vip_version: v0.6.4
+""") #kube_vip_version 0.6.4 is stable
 
 with open("group_vars/all/vault.yml", 'w') as sys_file:
     sys_file.write(f"""---

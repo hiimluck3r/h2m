@@ -26,3 +26,49 @@
 
 - name: Check if cluster is ready
   shell: "k3sup ready"
+
+- name: Change localhost to node IP
+  shell: sed -i 's|127.0.0.1|{{ inventory_hostname }}|' $HOME/kubeconfig
+
+- name: Get cluster-node ./kubeconfig
+  fetch:
+    src: $HOME/kubeconfig
+    dest: kubeconfigs/cluster/
+    flat: yes
+
+- name: Create the RBAC kube-vip settings
+  kubernetes.core.k8s:
+    state: present
+    src: https://kube-vip.io/manifests/rbac.yaml
+
+- name: Get kube-vip containerd image
+  shell: "sudo ctr image pull ghcr.io/kube-vip/kube-vip:{{ kube_vip_version }}"
+  ignore_errors: true #something breaks it
+
+- name: Generate kube-vip daemonSet manifest
+  shell: "{{ item }} manifest daemonset \
+    --interface {{ kube_vip_interface }} \
+    --inCluster \
+    --taint \
+    --services \
+    --arp"
+  with_list:
+    - "sudo ctr run --rm --net-host ghcr.io/kube-vip/kube-vip:{{ kube_vip_version }} vip /kube-vip"
+  register: manifest
+
+- name: Print manifest
+  debug:
+    msg: "{{ manifest.results.0.stdout_lines | join('\n') }}"
+
+# Used for debug purposes
+
+#- name: Save manifest into roles/init/files/cluster_kubevip.yaml
+#  local_action: 
+#    module: ansible.builtin.copy
+#    content: "{{ manifest.results.0.stdout_lines | join('\n') }}"
+#    dest: roles/init/files/cluster_kubevip.yaml
+
+- name: Start kube-vip daemon-set
+  kubernetes.core.k8s:
+    state: present
+    src: "{{ manifest.results.0.stdout_lines | join('\n')}}"
