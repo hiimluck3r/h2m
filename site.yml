@@ -17,17 +17,18 @@
           - pyyaml
           - jsonpatch
 
-    - name: Install helm if not exists
-      unarchive:
-        src: https://get.helm.sh/helm-v3.11.0-linux-amd64.tar.gz
-        dest: /usr/local/bin
-        extra_opts: "--strip-components=1"
-        owner: {{ user }}
-        group: {{ user }}
-        mode: 0755
-        remote_src: true
-      args:
-        creates: /usr/local/bin/helm
+    - name: Check if helm exists
+      ansible.builtin.command: "which helm"
+      register: helm_res
+    
+    - name: Install helm
+      ansible.builtin.shell: "{{ item }}"
+      with_list:
+        - "curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3"
+        - "sudo chmod 700 get_helm.sh"
+        - "./get_helm.sh"
+        - "rm get_helm.sh"
+      when: helm_res.rc > 0
 
   roles:
     - init
