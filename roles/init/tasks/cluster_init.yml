@@ -62,11 +62,11 @@
 
 # Used for debug purposes
 
-#- name: Save manifest into roles/init/files/cluster_kubevip.yaml
+#- name: Save manifest into roles/init/manifests/cluster_kubevip.yaml
 #  local_action: 
 #    module: ansible.builtin.copy
 #    content: "{{ manifest.results.0.stdout_lines | join('\n') }}"
-#    dest: roles/init/files/cluster_kubevip.yaml
+#    dest: roles/init/manifests/cluster_kubevip.yaml
 
 - name: Start kube-vip daemon-set
   kubernetes.core.k8s:

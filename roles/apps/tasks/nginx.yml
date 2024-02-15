@@ -1,0 +1,20 @@
+---
+- name: Install nginx
+  kubernetes.core.k8s:
+    state: present
+    src: /roles/apps/manifests/nginx/{{ item }}
+  with_list:
+    - "deployment.yaml"
+    - "service.yaml"
+    - "httproute.yaml"
+  when: nginx|default(false)|bool == true
+
+- name: Remove nginx
+  kubernetes.core.k8s:
+    state: absent
+    src: /roles/apps/manifests/nginx/{{ item }}
+  with_list:
+    - "deployment.yaml"
+    - "service.yaml"
+    - "httproute.yaml"
+  when: nginx|default(false)|bool == false
