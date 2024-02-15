@@ -71,4 +71,4 @@
 - name: Start kube-vip daemon-set
   kubernetes.core.k8s:
     state: present
-    definition: "{{ manifest.results.0.stdout_lines | join('\n')} }"
+    definition: "{{ manifest.results.0.stdout_lines | join('\n') }}"

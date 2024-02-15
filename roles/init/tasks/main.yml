@@ -21,49 +21,6 @@
       data:
         cidr-global: "{{ cidr_global }}"
 
-- name: Ins---
-- name: Configurate single-node k3s cluster
-  ansible.builtin.import_tasks:
-    file: cluster_init.yml
-  when: inventory_hostname in groups["cluster"]
-
-- name: Apply kube-vip-cloud-provider
-  kubernetes.core.k8s:
-    state: present
-    src: https://raw.githubusercontent.com/kube-vip/kube-vip-cloud-provider/main/manifest/kube-vip-cloud-controller.yaml
-
-- name: Apply ConfigMap with CIDR IP range for kube-vip-cloud-provider
-  kubernetes.core.k8s:
-    state: present
-    definition:
-      apiVersion: v1
-      kind: ConfigMap
-      metadata:
-        name: kubevip
-        namespace: kube-system
-      data:
-        cidr-global: "{{ cidr_global }}"
-
-- name: Install Kong Ingress Controller CRD
-  kubernetes.core.k8s:
-    state: present
-    src: https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml
-  
-- name: Install Kong GatewayClass and Gateway
-  kubernetes.core.k8s:
-    state: present
-    src: roles/init/manifests/kong-gateway.yaml
-
-- name: Add Kong Helm charts
-  shell: helm repo add kong https://charts.konghq.com && helm repo update
-
-- name: Install Kong
-  kubernetes.core.helm:
-    name: kong
-    chart: kong/ingress
-    release_namespace: kong
-    create_namespace: true
-
 - name: Install Kong Ingress Controller CRD
   kubernetes.core.k8s:
     state: present
