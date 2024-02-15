@@ -25,11 +25,18 @@
   kubernetes.core.k8s:
     state: present
     src: https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml
-  
+
+- name: Render Kong Gateway manifest
+  template:
+    src: 'roles/init/manifests/kong-gateway.yaml'
+    dest: '~/manifests/kong-gateway.yaml'
+    owner: "{{ user }}"
+    mode: '0644'
+
 - name: Install Kong GatewayClass and Gateway
   kubernetes.core.k8s:
     state: present
-    definition: "{{ lookup('file', 'roles/init/manifests/kong-gateway.yaml') }}"
+    src: "~/kong-gateway.yaml"
 
 - name: Add Kong Helm charts
   shell: helm repo add kong https://charts.konghq.com && helm repo update
@@ -37,6 +44,6 @@
 - name: Install Kong
   kubernetes.core.helm:
     name: kong
-    chart: kong/ingress
+    chart_ref: kong/ingress
     release_namespace: kong
     create_namespace: true
