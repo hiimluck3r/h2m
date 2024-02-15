@@ -6,4 +6,4 @@ python3 installer.py
 
 ./services.sh
 
-ansible-playbook -i inventory --ask-vault-pass --ask-become-pass playbooks/setup.yml
+ansible-playbook -i inventory --ask-vault-pass --ask-become-pass site.yml
