@@ -1,24 +1,29 @@
 ---
+- name: Create ~/manifests/nginx directory if not exists
+  file:
+    path: "~/manifests/nginx"
+    state: directory
+
 - name: Render nginx manifests
   template:
     src: "roles/apps/manifests/nginx/{{ item }}.yaml"
     dest: "~/manifests/nginx/{{ item }}.yaml"
     owner: "{{ user }}"
     mode: '0644'
-    with_list:
-      - "deployment"
-      - "service"
-      - "httproute"
+  with_list:
+    - "deployment"
+    - "service"
+    - "httproute"
 
 - name: Install nginx
   kubernetes.core.k8s:
     state: present
     src: "~/manifests/nginx/{{ item }}.yaml"
-    with_list:
-      - "deployment"
-      - "service"
-      - "httproute"
-    when: nginx|default(false)|bool == true
+  with_list:
+    - "deployment"
+    - "service"
+    - "httproute"
+  when: nginx|default(false)|bool == true
 
 - name: Remove nginx
   kubernetes.core.k8s:
