@@ -20,7 +20,8 @@
   with_list:
     - "k3sup install --local --user {{ user }} --no-extras"
     - "sudo chmod 644 /etc/rancher/k3s/k3s.yaml"
-    - "kubectl config view --raw > ~/.kube/config"
+    - "sudo chown {{ user }}:{{ user }} /etc/rancher/k3s/k3s.yaml"
+    - "kubectl config view --raw > ~/.kube/config" #
     - "sudo chmod 644 ~/.kube/config"
     - "sudo chown {{ user }}:{{ user }} ~/.kube/config"
 
@@ -31,7 +32,7 @@
   shell: sed -i 's|127.0.0.1|{{ inventory_hostname }}|' $HOME/kubeconfig
 
 - name: Get cluster-node ./kubeconfig
-  fetch:
+  fetch: #something happens here, check
     src: $HOME/kubeconfig
     dest: kubeconfigs/cluster/
     flat: yes
@@ -43,7 +44,7 @@
 
 - name: Get kube-vip containerd image
   shell: "sudo ctr image pull ghcr.io/kube-vip/kube-vip:{{ kube_vip_version }}"
-  ignore_errors: true #something breaks it
+  ignore_errors: true
 
 - name: Generate kube-vip daemonSet manifest
   shell: "{{ item }} manifest daemonset \

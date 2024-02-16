@@ -18,7 +18,7 @@ spec:
   listeners:
   - name: http
     port: 80
-    hostname: "*.{{ domain }}"
+    hostname: "*.{{ domain }}" #something bad is happening here, ansible passes old variable
     protocol: HTTP
     allowedRoutes:
       namespaces:
