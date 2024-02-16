@@ -7,6 +7,6 @@ spec:
   ports:
   - name: http
     port: 8001
-    targetPort: 81
+    targetPort: 80
   selector:
     app: apache

@@ -1,6 +1,6 @@
 ---
-- name: Configure {{ item }}
-  ansible.builtin.import_tasks:
+- name: Configure apps
+  ansible.builtin.include_tasks:
     file: "{{ item }}.yml"
   with_items:
     - "nginx"

@@ -36,6 +36,7 @@
 - name: Install Kong GatewayClass and Gateway
   kubernetes.core.k8s:
     state: present
+    namespace: default
     src: "~/manifests/kong-gateway.yaml"
 
 - name: Add Kong Helm charts

@@ -18,6 +18,7 @@
 - name: Install nginx
   kubernetes.core.k8s:
     state: present
+    namespace: default
     src: "~/manifests/nginx/{{ item }}.yaml"
   with_list:
     - "deployment"
@@ -28,6 +29,7 @@
 - name: Remove nginx
   kubernetes.core.k8s:
     state: absent
+    namespace: default
     src: "~/manifests/nginx/{{ item }}.yaml"
   with_list:
       - "deployment"

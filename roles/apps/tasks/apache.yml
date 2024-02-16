@@ -18,6 +18,7 @@
 - name: Install apache
   kubernetes.core.k8s:
     state: present
+    namespace: default
     src: "~/manifests/apache/{{ item }}.yaml"
   with_list:
     - "deployment"
@@ -28,6 +29,7 @@
 - name: Remove apache
   kubernetes.core.k8s:
     state: absent
+    namespace: default
     src: "~/manifests/apache/{{ item }}.yaml"
   with_list:
       - "deployment"

@@ -17,3 +17,4 @@ linkstack: OFF | LinkTree-selfhosted
 ghost: OFF | blog-webapp
 pterodactyl: OFF | minecraft-server-panel
 nginx: OFF | reverse-proxy/loadbalancer/httpserver
+konga: OFF | KongIngressController-gui

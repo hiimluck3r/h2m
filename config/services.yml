@@ -4,5 +4,4 @@ linkstack: OFF | LinkTree-selfhosted
 ghost: OFF | blog-webapp
 nginx: OFF | httpserver
 apache: OFF | httpserver
-dashboard: OFF | kubernetes-dashboard
 monitoring: OFF | prometheus+grafana
