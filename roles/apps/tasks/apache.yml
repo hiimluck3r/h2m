@@ -1,0 +1,36 @@
+---
+- name: Create ~/manifests/apache directory if not exists
+  file:
+    path: "~/manifests/apache"
+    state: directory
+
+- name: Render apache manifests
+  template:
+    src: "roles/apps/manifests/apache/{{ item }}.yaml"
+    dest: "~/manifests/apache/{{ item }}.yaml"
+    owner: "{{ user }}"
+    mode: '0644'
+  with_list:
+    - "deployment"
+    - "service"
+    - "httproute"
+
+- name: Install apache
+  kubernetes.core.k8s:
+    state: present
+    src: "~/manifests/apache/{{ item }}.yaml"
+  with_list:
+    - "deployment"
+    - "service"
+    - "httproute"
+  when: apache|default(false)|bool == true
+
+- name: Remove apache
+  kubernetes.core.k8s:
+    state: absent
+    src: "~/manifests/apache/{{ item }}.yaml"
+  with_list:
+      - "deployment"
+      - "service"
+      - "httproute"
+  when: apache|default(false)|bool == false

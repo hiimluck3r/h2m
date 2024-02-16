@@ -1,4 +1,8 @@
 ---
-- name: Configure nginx
+- name: Configure {{ item }}
   ansible.builtin.import_tasks:
-    file: nginx.yml
+    file: "{{ item }}.yml"
+  with_items:
+    - "nginx"
+    - "apache"
+    - "dashboard"
