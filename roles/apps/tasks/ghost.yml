@@ -1,4 +1,15 @@
 ---
+- name: Create ~/manifests/ghost directory if not exists
+  file:
+    path: "~/manifests/ghost"
+    state: directory
+  when: ghost|default(false)|bool == true
+
+- name: Set app and port variables for ghost app
+  set_fact:
+    app: ghost
+    port: 8003
+
 - name: Deploy ghost with Helm
   kubernetes.core.helm:
     name: ghost
@@ -12,18 +23,37 @@
       ghostBlogTitle: "{{ ghostBlogTitle }}"
       ghostHost: "ghost.{{ domain }}"
       ghostEnableHttps: "{{ ghostEnableHttps }}"
+      mysql:
+        auth:
+          rootPassword: "{{ password }}"
+          password: "{{ password }}"
       service:
         type: ClusterIP
+        ports:
+          http: 8003
+          #https:
+      containerPorts:
+        http: 2368
+        #https: 
+  when: ghost|default(false)|bool == true
+
+- name: Render ghost HTTPRoute manifest
+  template:
+    src: "roles/apps/templates/{{ item }}.yaml.j2"
+    dest: "~/manifests/ghost/{{ item }}.yaml"
+    owner: "{{ user }}"
+    mode: '0644'
+  with_list:
+    - "httproute"
   when: ghost|default(false)|bool == true
 
 - name: Apply HTTPRoute to ghost
   kubernetes.core.k8s:
-  state: present
-  template:
-    vars:
-      app: ghost
-      port: 8003
-    path: '/templates/httproute.yaml.j2'
+    state: present
+    namespace: default
+    src: "~/manifests/ghost/{{ item }}.yaml"
+  with_list:
+    - "httproute"
   when: ghost|default(false)|bool == true
 
 - name: Remove ghost with helm

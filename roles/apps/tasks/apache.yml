@@ -3,6 +3,12 @@
   file:
     path: "~/manifests/apache"
     state: directory
+  when: apache|default(false)|bool == true
+
+- name: Set app and port variables for apache app
+  set_fact:
+    app: apache
+    port: 8001
 
 - name: Render apache manifests
   template:
@@ -13,7 +19,16 @@
   with_list:
     - "deployment"
     - "service"
+
+- name: Render apache HTTPRoute manifest
+  template:
+    src: "roles/apps/templates/{{ item }}.yaml.j2"
+    dest: "~/manifests/apache/{{ item }}.yaml"
+    owner: "{{ user }}"
+    mode: '0644'
+  with_list:
     - "httproute"
+  when: apache|default(false)|bool == true
 
 - name: Install apache
   kubernetes.core.k8s:

@@ -3,6 +3,12 @@
   file:
     path: "~/manifests/nginx"
     state: directory
+  when: nginx|default(false)|bool == true
+
+- name: Set app and port variables for nginx app
+  set_fact:
+    app: nginx
+    port: 8000
 
 - name: Render nginx manifests
   template:
@@ -13,7 +19,16 @@
   with_list:
     - "deployment"
     - "service"
+
+- name: Render nginx HTTPRoute manifest
+  template:
+    src: "roles/apps/templates/{{ item }}.yaml.j2"
+    dest: "~/manifests/nginx/{{ item }}.yaml"
+    owner: "{{ user }}"
+    mode: '0644'
+  with_list:
     - "httproute"
+  when: nginx|default(false)|bool == true
 
 - name: Install nginx
   kubernetes.core.k8s:
