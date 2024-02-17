@@ -1,0 +1,53 @@
+---
+- name: Create ~/manifests/littlelink directory if not exists
+  file:
+    path: "~/manifests/littlelink"
+    state: directory
+  when: littlelink|default(false)|bool == true
+
+- name: Set app and port variables for littlelink app
+  set_fact:
+    app: littlelink
+    port: 8002
+
+- name: Render littlelink manifests
+  template:
+    src: "roles/apps/manifests/littlelink/{{ item }}.yaml"
+    dest: "~/manifests/littlelink/{{ item }}.yaml"
+    owner: "{{ user }}"
+    mode: '0644'
+  with_list:
+    - "deployment"
+    - "service"
+
+- name: Render littlelink HTTPRoute manifest
+  template:
+    src: "roles/apps/templates/{{ item }}.yaml.j2"
+    dest: "~/manifests/littlelink/{{ item }}.yaml"
+    owner: "{{ user }}"
+    mode: '0644'
+  with_list:
+    - "httproute"
+  when: littlelink|default(false)|bool == true
+
+- name: Install littlelink
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    src: "~/manifests/littlelink/{{ item }}.yaml"
+  with_list:
+    - "deployment"
+    - "service"
+    - "httproute"
+  when: littlelink|default(false)|bool == true
+
+- name: Remove littlelink
+  kubernetes.core.k8s:
+    state: absent
+    namespace: default
+    src: "~/manifests/littlelink/{{ item }}.yaml"
+  with_list:
+      - "deployment"
+      - "service"
+      - "httproute"
+  when: littlelink|default(false)|bool == false

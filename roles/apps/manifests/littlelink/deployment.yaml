@@ -90,9 +90,9 @@ spec:
         - name: CUSTOM_BUTTON_URL
           value: "{{ CUSTOM_BUTTON_URL }}"
         - name: CUSTOM_BUTTON_COLOR
-          value: "{{ CUSTOM_BUTTON_COLOR }}"
+          value: "#{{ CUSTOM_BUTTON_COLOR }}" #please be aware of NOT using "#" at the start of the definition
         - name: CUSTOM_BUTTON_TEXT_COLOR
-          value: "{{ CUSTOM_BUTTON_TEXT_COLOR }}"
+          value: "#{{ CUSTOM_BUTTON_TEXT_COLOR }}" #please be aware of NOT using "#" at the start of the definition
         - name: CUSTOM_BUTTON_ALT_TEXT
           value: "{{ CUSTOM_BUTTON_ALT_TEXT }}"
         - name: CUSTOM_BUTTON_NAME

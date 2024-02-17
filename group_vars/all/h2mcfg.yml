@@ -1,7 +1,61 @@
 ---
 cp_vip:  #Control-plane Virtual IP
-cidr_global: 192.168.0.200/29 #CIDR-based kube-vip LoadBalancer IP range
-domain: example.com
+cidr_global: 192.168.0.10/29 #CIDR-based kube-vip LoadBalancer IP range
+domain: novodigital.ru
 user: h2m
 kube_vip_interface: eth0
 kube_vip_version: v0.6.4
+
+#Applications
+
+#Ghost
+ghostUsername: user
+ghostBlogTitle: h2m Blog
+ghostEnableHttps: false
+
+#LittleLink
+META_TITLE: h2m
+META_DESCRIPTION: Example of meta description for h2m
+META_AUTHOR: hiimluck3r
+META_KEYWORDS: HomeLab, Kubernetes, Ansible, Automate
+LANG: en
+META_INDEX_STATUS: all
+OG_SITE_NAME: h2m
+OG_TITLE: h2m
+OG_DESCRIPTION: example of description
+OG_URL: https://thebroadband.ru
+OG_IMAGE: https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg
+OG_IMAGE_WIDTH: 400
+OG_IMAGE_HEIGHT: 400
+GA_TRACKING_ID: GXXXXXXXXXX
+THEME: Dark
+FAVICON_URL: https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg
+AVATAR_URL: https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg
+AVATAR_2X_URL: https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_square.jpg
+AVATAR_ALT: cat pic
+NAME: Random Cat
+BIO: Just a cat
+BUTTON_ORDER: YOUTUBE,EMAIL,TWITCH,TELEGRAM,TWITTER,GITHUB,INSTAGRAM,LINKED_IN,DISCORD,FACEBOOK,TIKTOK,PATREON,GEAR,DOCUMENTATION,STEAM,SPOTIFY,REDDIT
+CUSTOM_BUTTON_TEXT: Documentation,Recommended Gear
+CUSTOM_BUTTON_URL: https://wikipedia.com,https://www.lttstore.com/
+CUSTOM_BUTTON_COLOR: 000000,#000000
+CUSTOM_BUTTON_TEXT_COLOR: ffffff,#ffffff
+CUSTOM_BUTTON_ALT_TEXT: Documentation,Segue to our sponsor
+CUSTOM_BUTTON_NAME: DOCUMENTATION,GEAR
+CUSTOM_BUTTON_ICON: fas filealt,fas facog
+GITHUB: https://github.com/The-Broad-Band
+TWITTER: https://twitter.com
+INSTAGRAM: https://instagram.com
+LINKED_IN: https://linkedin.com
+YOUTUBE: https://youtube.com/
+TWITCH: https://twitch.tv
+DISCORD: https://discord.com
+TIKTOK: https://tiktok.com
+FACEBOOK: https://facebook.com
+PATREON: https://patreon.com
+TELEGRAM: https://t.me/imluck3r
+SPOTIFY: https://spotify.com
+REDDIT: https:/reddit.com
+EMAIL: mail@example.com
+STEAM: https://steamcommunity.com
+FOOTER: hiimluck3r © 2024

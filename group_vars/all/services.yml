@@ -1,8 +1,8 @@
 ---
-nextcloud: ON
-calibre: ON
+nextcloud: OFF
+calibre: OFF
 littlelink: ON
 ghost: ON
-nginx: OFF
-apache: OFF
+nginx: ON
+apache: ON
 monitoring: OFF

@@ -124,6 +124,10 @@ spec:
             ]
             
             for item in custom_env:
+              if 'COLOR' in item:
+                deployment.writelines(f'''        - name: {item}
+          value: "#{{{{ { item } }}}}" #please be aware of NOT using "#" at the start of the definition\n''')
+              else:  
                 deployment.writelines(f'''        - name: {item}
           value: "{{{{ { item } }}}}"\n''')
         

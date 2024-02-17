@@ -2,4 +2,4 @@
 
 python3 installer.py
 
-./services.sh
+./services_cfg.sh

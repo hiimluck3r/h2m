@@ -157,12 +157,12 @@ ghostEnableHttps: false
 {littlelink_env} {datetime.date.today().year}
 """) #kube_vip_version 0.6.4 is stable
 
-with open("group_vars/all/vault.yml", 'w') as sys_file:
-    sys_file.write(f"""---
+with open("../group_vars/all/vault.yml", 'w') as vault_file:
+    vault_file.write(f"""---
 email: {email}
 password: {password}
 """)
 
-vault_encrypt = subprocess.call(["ansible-vault", "encrypt", "group_vars/all/vault.yml"])
+vault_encrypt = subprocess.call(["ansible-vault", "encrypt", "../group_vars/all/vault.yml"])
 
 print("Don't forget this password since it's the only way of decrypting secrets you provided before.")
