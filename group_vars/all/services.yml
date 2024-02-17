@@ -1,7 +1,8 @@
 ---
-nextcloud: false
-calibre: false
-linkstack: false
-ghost: false
-nginx: false
-apache: false
+nextcloud: ON
+calibre: ON
+littlelink: ON
+ghost: ON
+nginx: OFF
+apache: OFF
+monitoring: OFF

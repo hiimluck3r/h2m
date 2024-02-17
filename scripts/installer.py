@@ -1,6 +1,7 @@
 import os
 import yaml
 import subprocess
+import datetime
 
 print("""
 ██╗  ██╗██╗██╗███╗   ███╗                
@@ -133,6 +134,9 @@ quorum
 master
 cluster""")
 
+with open('example.txt', 'r') as littlelink_file:
+    littlelink_env = littlelink_file.read()
+
 with open("../group_vars/all/h2mcfg.yml", 'w') as sys_file:
     sys_file.write(f"""---
 cp_vip: {cp_vip} #Control-plane Virtual IP
@@ -143,10 +147,14 @@ kube_vip_interface: {kube_vip_interface}
 kube_vip_version: v0.6.4
 
 #Applications
+
+#Ghost
 ghostUsername: user
 ghostBlogTitle: h2m Blog
 ghostEnableHttps: false
 
+#LittleLink
+{littlelink_env} {datetime.date.today().year}
 """) #kube_vip_version 0.6.4 is stable
 
 with open("group_vars/all/vault.yml", 'w') as sys_file:

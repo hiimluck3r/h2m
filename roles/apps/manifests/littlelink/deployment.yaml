@@ -21,6 +21,28 @@ spec:
         env:
         - name: TZ
           value: "{{ TZ }}"
+        - name: LANG
+          value: "{{ LANG }}"
+        - name: META_INDEX_STATUS
+          value: "{{ META_INDEX_STATUS }}"
+        - name: META_KEYWORDS
+          value: "{{ META_KEYWORDS }}"
+        - name: OG_SITE_NAME
+          value: "{{ OG_SITE_NAME }}"
+        - name: OG_TITLE
+          value: "{{ OG_TITLE }}"
+        - name: OG_DESCRIPTION
+          value: "{{ OG_DESCRIPTION }}"
+        - name: OG_URL
+          value: "{{ OG_URL }}"
+        - name: OG_IMAGE
+          value: "{{ OG_IMAGE }}"
+        - name: OG_IMAGE_WIDTH
+          value: "{{ OG_IMAGE_WIDTH }}"
+        - name: OG_IMAGE_HEIGHT
+          value: "{{ OG_IMAGE_HEIGHT }}"
+        - name: GA_TRACKING_ID
+          value: GXXXXXXXXXX
         - name: META_TITLE
           value: "{{ META_TITLE }}"
         - name: META_DESCRIPTION
@@ -41,75 +63,51 @@ spec:
           value: "{{ NAME }}"
         - name: BIO
           value: "{{ BIO }}"
-        - name: GITHUB
-          value: "{{ GITHUB }}"
-        - name: TWITTER
-          value: "{{ TWITTER }}"
-        - name: INSTAGRAM
-          value: "{{ INSTAGRAM }}"
+        - name: FOOTER
+          value: "{{ FOOTER }}"
+        - name: BUTTON_ORDER
+          value: "{{ BUTTON_ORDER }}"
         - name: YOUTUBE
           value: "{{ YOUTUBE }}"
         - name: TWITCH
           value: "{{ TWITCH }}"
+        - name: TWITTER
+          value: "{{ TWITTER }}"
+        - name: GITHUB
+          value: "{{ GITHUB }}"
+        - name: INSTAGRAM
+          value: "{{ INSTAGRAM }}"
+        - name: LINKED_IN
+          value: "{{ LINKED_IN }}"
         - name: DISCORD
           value: "{{ DISCORD }}"
-        - name: TIKTOK
-          value: "{{ TIKTOK }}"
-        - name: KIT
-          value: "{{ KIT }}"
         - name: FACEBOOK
           value: "{{ FACEBOOK }}"
-        - name: FACEBOOK_MESSENGER
-          value: "{{ FACEBOOK_MESSENGER }}"
-        - name: LINKED_IN
-          value: "{{ LINKED_INT }}"
-        - name: PRODUCT_HUNT
-          value: "{{ PRODUCT_HUNT }}"
-        - name: SNAPCHAT
-          value: "{{ SNAPCHAT }}"
+        - name: TIKTOK
+          value: "{{ TIKTOK }}"
+        - name: CUSTOM_BUTTON_TEXT
+          value: "{{ CUSTOM_BUTTON_TEXT }}"
+        - name: CUSTOM_BUTTON_URL
+          value: "{{ CUSTOM_BUTTON_URL }}"
+        - name: CUSTOM_BUTTON_COLOR
+          value: "{{ CUSTOM_BUTTON_COLOR }}"
+        - name: CUSTOM_BUTTON_TEXT_COLOR
+          value: "{{ CUSTOM_BUTTON_TEXT_COLOR }}"
+        - name: CUSTOM_BUTTON_ALT_TEXT
+          value: "{{ CUSTOM_BUTTON_ALT_TEXT }}"
+        - name: CUSTOM_BUTTON_NAME
+          value: "{{ CUSTOM_BUTTON_NAME }}"
+        - name: CUSTOM_BUTTON_ICON
+          value: "{{ CUSTOM_BUTTON_ICON }}"
+        - name: PATREON
+          value: "{{ PATREON }}"
+        - name: TELEGRAM
+          value: "{{ TELEGRAM }}"
+        - name: STEAM
+          value: "{{ STEAM }}"
         - name: SPOTIFY
           value: "{{ SPOTIFY }}"
         - name: REDDIT
           value: "{{ REDDIT }}"
-        - name: MEDIUM
-          value: "{{ MEDIUM }}"
-        - name: PINTEREST
-          value: "{{ PINTEREST }}"
         - name: EMAIL
           value: "{{ EMAIL }}"
-        - name: EMAIL_ALT
-          value: "{{ EMAIL_ALT }}"
-        - name: SOUND_CLOUD
-          value: "{{ SOUND_CLOUD }}"
-        - name: FIGMA
-          value: "{{ FIGMA }}"
-        - name: TELEGRAM
-          value: "{{ TELEGRAM }}"
-        - name: TUMBLR
-          value: "{{ TUMBLR }}"
-        - name: STEAM
-          value: "{{ STEAM }}"
-        - name: VIMEO
-          value: "{{ VIMEO }}"
-        - name: WORDPRESS
-          value: "{{ WORDPRESS }}"
-        - name: GOODREADS
-          value: "{{ GOODREADS }}"
-        - name: SKOOB
-          value: "{{ SKOOB }}"
-        - name: FOOTER
-          value: "{{ FOOTER }}"
-        - name: 
-          value: 
-        - name: 
-          value: 
-        - name: 
-          value: 
-        - name: 
-          value: 
-        - name: 
-          value: 
-        - name: 
-          value: 
-        - name: BUTTON_ORDER
-          value: "{{ BUTTON_ORDER }}"

@@ -1,0 +1,1 @@
+python3 services_cfg.py
