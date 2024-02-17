@@ -132,8 +132,17 @@ spec:
           value: "{{{{ { item } }}}}"\n''')
         
         else:
-            deployment.writelines(f'''        - name: {socials[each]["name"]}
-          value: "{{{{ { socials[each]["name"] } }}}}"\n''')
+            
+            if 'EMAIL' in socials[each]["name"]: #what a mess
+              custom_env = ["EMAIL", "EMAIL_ALT"]
+              
+              for item in custom_env:
+                deployment.writelines(f'''        - name: {item}
+            value: "{{{{ { item } }}}}"\n''')
+            
+            else:
+              deployment.writelines(f'''        - name: {socials[each]["name"]}
+            value: "{{{{ { socials[each]["name"] } }}}}"\n''')
 
 time.sleep(0.5)
 print('Done!')
