@@ -1,1 +1,0 @@
-ansible-playbook -i inventory --ask-vault-pass --ask-become-pass playbooks/destroy.yml

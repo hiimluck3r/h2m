@@ -32,7 +32,7 @@ read_services() {
     services=()
     while IFS= read -r line; do
         extract_info "$line"
-    done < config/services.yml
+    done < ../config/services.yml
 }
 
 # Display menu
@@ -52,9 +52,9 @@ display_checklist() {
         fi
     done
     
-    echo "---" > group_vars/all/services.yml
-    sed 's/ON.*/ON/' config/services.yml >> group_vars/all/services.yml
-    sed -i 's/OFF.*/OFF/' group_vars/all/services.yml
+    echo "---" > ../group_vars/all/services.yml
+    sed 's/ON.*/ON/' ../config/services.yml >> ../group_vars/all/services.yml
+    sed -i 's/OFF.*/OFF/' ../group_vars/all/services.yml
 }
 
 display_checklist

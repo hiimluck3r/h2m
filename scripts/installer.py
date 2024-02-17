@@ -112,7 +112,7 @@ Creating ansible-inventory
 
 #I want to refactor it so badly
 #Please, try to implement newline with jinja-ish templating using f-strings
-with open("inventory", "w") as inv_file:
+with open("../inventory", "w") as inv_file:
     inv_file.write(f"""[leader]
 {master_nodes[0] if len(master_nodes)!=0 else ""}
 
@@ -133,7 +133,7 @@ quorum
 master
 cluster""")
 
-with open("group_vars/all/h2mcfg.yml", 'w') as sys_file:
+with open("../group_vars/all/h2mcfg.yml", 'w') as sys_file:
     sys_file.write(f"""---
 cp_vip: {cp_vip} #Control-plane Virtual IP
 cidr_global: {cidr_global} #CIDR-based kube-vip LoadBalancer IP range

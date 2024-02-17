@@ -1,0 +1,115 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: littlelink
+spec:
+  selector:
+    matchLabels:
+      app: littlelink
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: littlelink
+    spec:
+      containers:
+      - name: littlelink
+        image: ghcr.io/techno-tim/littlelink-server:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: TZ
+          value: "{{ TZ }}"
+        - name: META_TITLE
+          value: "{{ META_TITLE }}"
+        - name: META_DESCRIPTION
+          value: "{{ META_DESCRIPTION }}"
+        - name: META_AUTHOR
+          value: "{{ META_AUTHOR }}"
+        - name: THEME
+          value: "{{ THEME }}"
+        - name: FAVICON_URL
+          value: "{{ FAVICON_URL }}"
+        - name: AVATAR_URL
+          value: "{{ AVATAR_URL }}"
+        - name: AVATAR_2X_URL
+          value: "{{ AVATAR_2X_URL }}"
+        - name: AVATAR_ALT
+          value: "{{ AVATAR_ALT }}"
+        - name: NAME
+          value: "{{ NAME }}"
+        - name: BIO
+          value: "{{ BIO }}"
+        - name: GITHUB
+          value: "{{ GITHUB }}"
+        - name: TWITTER
+          value: "{{ TWITTER }}"
+        - name: INSTAGRAM
+          value: "{{ INSTAGRAM }}"
+        - name: YOUTUBE
+          value: "{{ YOUTUBE }}"
+        - name: TWITCH
+          value: "{{ TWITCH }}"
+        - name: DISCORD
+          value: "{{ DISCORD }}"
+        - name: TIKTOK
+          value: "{{ TIKTOK }}"
+        - name: KIT
+          value: "{{ KIT }}"
+        - name: FACEBOOK
+          value: "{{ FACEBOOK }}"
+        - name: FACEBOOK_MESSENGER
+          value: "{{ FACEBOOK_MESSENGER }}"
+        - name: LINKED_IN
+          value: "{{ LINKED_INT }}"
+        - name: PRODUCT_HUNT
+          value: "{{ PRODUCT_HUNT }}"
+        - name: SNAPCHAT
+          value: "{{ SNAPCHAT }}"
+        - name: SPOTIFY
+          value: "{{ SPOTIFY }}"
+        - name: REDDIT
+          value: "{{ REDDIT }}"
+        - name: MEDIUM
+          value: "{{ MEDIUM }}"
+        - name: PINTEREST
+          value: "{{ PINTEREST }}"
+        - name: EMAIL
+          value: "{{ EMAIL }}"
+        - name: EMAIL_ALT
+          value: "{{ EMAIL_ALT }}"
+        - name: SOUND_CLOUD
+          value: "{{ SOUND_CLOUD }}"
+        - name: FIGMA
+          value: "{{ FIGMA }}"
+        - name: TELEGRAM
+          value: "{{ TELEGRAM }}"
+        - name: TUMBLR
+          value: "{{ TUMBLR }}"
+        - name: STEAM
+          value: "{{ STEAM }}"
+        - name: VIMEO
+          value: "{{ VIMEO }}"
+        - name: WORDPRESS
+          value: "{{ WORDPRESS }}"
+        - name: GOODREADS
+          value: "{{ GOODREADS }}"
+        - name: SKOOB
+          value: "{{ SKOOB }}"
+        - name: FOOTER
+          value: "{{ FOOTER }}"
+        - name: 
+          value: 
+        - name: 
+          value: 
+        - name: 
+          value: 
+        - name: 
+          value: 
+        - name: 
+          value: 
+        - name: 
+          value: 
+        - name: BUTTON_ORDER
+          value: "{{ BUTTON_ORDER }}"

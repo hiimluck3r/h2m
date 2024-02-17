@@ -14,7 +14,7 @@ echo "deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription" >
 
 apt update && apt -y dist-upgrade
 
-apt install -y ethtool htop net-tools sudo tree vim nano curl wget git lm-sensors s-tui
+apt install -y ethtool htop net-tools sudo ansible tree vim nano curl wget git lm-sensors s-tui
 
 sed -Ezi.bak "s/(Ext.Msg.show\(\{\s+title: gettext\('No valid sub)/void\(\{ \/\/\1/g" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js && systemctl restart pveproxy.service
 
