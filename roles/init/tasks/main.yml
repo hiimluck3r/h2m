@@ -39,8 +39,15 @@
     namespace: default
     src: "~/manifests/kong-gateway.yaml"
 
-- name: Add Kong Helm charts
-  shell: helm repo add kong https://charts.konghq.com && helm repo update
+- name: Add necessary Helm charts
+  shell: "helm repo add {{ item }}"
+  with_list:
+    - "kong https://charts.konghq.com"
+    #- "bitnami https://charts.bitnami.com/bitnami"
+    #- "nextcloud https://nextcloud.github.io/helm/" #alternative to using urls as chart_ref
+
+- name: Update helm repositories
+  shell: helm repo update
 
 - name: Install Kong
   kubernetes.core.helm:

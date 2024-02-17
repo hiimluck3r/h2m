@@ -5,4 +5,4 @@
   with_items:
     - "nginx"
     - "apache"
-    - "dashboard"
+    - "ghost"

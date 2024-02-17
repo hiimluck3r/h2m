@@ -128,6 +128,12 @@ domain: {domain}
 user: {user}
 kube_vip_interface: {kube_vip_interface}
 kube_vip_version: v0.6.4
+
+#Applications
+ghostUsername: user
+ghostBlogTitle: h2m Blog
+ghostEnableHttps: false
+
 """) #kube_vip_version 0.6.4 is stable
 
 with open("group_vars/all/vault.yml", 'w') as sys_file:

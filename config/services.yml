@@ -1,6 +1,6 @@
 nextcloud: OFF | Cloud-suite
 calibre: OFF | Ebook-Library
-linkstack: OFF | LinkTree-selfhosted
+littlelink: OFF | LinkTree-selfhosted
 ghost: OFF | blog-webapp
 nginx: OFF | httpserver
 apache: OFF | httpserver

@@ -1,0 +1,39 @@
+---
+- name: Deploy ghost with Helm
+  kubernetes.core.helm:
+    name: ghost
+    state: present
+    chart_ref: oci://registry-1.docker.io/bitnamicharts/ghost
+    values:
+      ghostUsername: "{{ ghostUsername }}"
+      ghostEmail: "{{ email }}"
+      ghostPassword: "{{ password }}"
+      ghostBlogTitle: "{{ ghostBlogTitle }}"
+      ghostHost: "ghost.{{ domain }}"
+      ghostEnableHttps: "{{ ghostEnableHttps }}"
+      service:
+        type: ClusterIP
+  when: ghost|default(false)|bool == true
+
+- name: Apply HTTPRoute to ghost
+  kubernetes.core.k8s:
+  state: present
+  template:
+    vars:
+      app: ghost
+      port: 8003
+    path: '/templates/httproute.yaml.j2'
+  when: ghost|default(false)|bool == true
+
+- name: Remove ghost with helm
+  kubernetes.core.helm:
+    name: ghost
+    state: absent
+  when: ghost|default(false)|bool == false
+
+- name: Remove ghost HTTPRoute
+  kubernetes.core.k8s:
+    name: ghost
+    state: absent
+    kind: HTTPRoute
+  when: ghost|default(false)|bool == false
