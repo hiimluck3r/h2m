@@ -24,11 +24,18 @@ user = input("Enter username (this username will be used for creating new nodes 
 domain = input("Enter domain of the cluster: ")
 email = input("Enter your email: ")
 password = input("Enter your password (this password will be used to manage some of the services): ")
+while True:
+    if len(password) < 10:
+        password = input("Weak password! Use 10 to 32 characters: ")
+    elif len(password) > 32:
+        password = input("Too much! Use 10 to 32 characters: ")
+    else:
+        break
 
 print(f"User: {user}")
 print(f"Domain: {domain}")
 print(f"E-mail: {email}")
-print(f"Password: {password}")
+print(f"Password: {password}") #should you even see it?
 
 confirmation = input("Proceed? (y/n): ")
 if confirmation != "y":
@@ -44,6 +51,12 @@ while True:
     """)
     cluster_mode = input("Will the k3s cluster be single-node or multi-node? (s/m): ")
     if cluster_mode in ["s", "m"]:
+        
+        #for now
+        if cluster_mode == "m":
+            print("Multi-node mode is currently unavailable.")
+            exit()
+
         break
     else:
         print('Use "s" for single-node or "m" for multi-node as an answer string.')

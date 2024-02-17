@@ -4,6 +4,7 @@
     name: ghost
     state: present
     chart_ref: oci://registry-1.docker.io/bitnamicharts/ghost
+    release_namespace: default
     values:
       ghostUsername: "{{ ghostUsername }}"
       ghostEmail: "{{ email }}"
