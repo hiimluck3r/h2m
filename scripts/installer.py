@@ -1,5 +1,4 @@
 import os
-import yaml
 import subprocess
 import datetime
 import time
@@ -154,7 +153,7 @@ quorum
 master
 cluster""")
 
-with open('littlelink_env.txt', 'r') as littlelink_file:
+with open('../config/littlelink_env.yaml', 'r') as littlelink_file:
     littlelink_env = littlelink_file.read()
 
 with open("../group_vars/all/h2mcfg.yml", 'w') as sys_file:

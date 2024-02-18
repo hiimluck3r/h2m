@@ -1,0 +1,96 @@
+---
+- name: Create ~/manifests/nextcloud directory if not exists
+  file:
+    path: "~/manifests/nextcloud"
+    state: directory
+  when: nextcloud|default(false)|bool == true
+
+- name: Set app and port variables for nextcloud app
+  set_fact:
+    app: nextcloud
+    http_port: 8004
+
+- name: Add NextCloud helm chart
+  kubernetes.core.helm_repository:
+    name: nextcloud
+    repo_url: "https://nextcloud.github.io/helm/"
+  when: nextcloud|default(false)|bool == true
+
+- name: Deploy nextcloud with Helm
+  kubernetes.core.helm:
+    update_repo_cache: true
+    name: nextcloud
+    state: present
+    chart_ref: 
+    release_namespace: default
+    values:
+      nextcloud:
+        host: "nextcloud.{{ domain }}"
+        username: "{{ user }}"
+        password: "{{ password }}"
+      primary:
+        persistence:
+          enabled: true
+      service:
+        port: "{{ http_port }}"
+      size: 8Gi
+      internalDatabase:
+        enabled: false
+      externalDatabase:
+        enabled: true
+        type: postgresql
+        user: nextcloud
+        password: "{{ password }}"
+      postgresql:
+        enabled: true
+        global:
+          postgresql:
+            auth:
+              username: nextcloud
+              password: "{{ password }}"
+              database: nextcloud
+        primary:
+          persistence:
+            enabled: true
+      redis:
+        enabled: true
+        auth:
+          enabled: true
+          password: "{{ password }}"
+      cronjob:
+        enabled: true
+  when: nextcloud|default(false)|bool == true
+
+- name: Render nextcloud HTTPRoute manifest
+  template:
+    src: "roles/apps/templates/{{ item }}.yaml.j2"
+    dest: "~/manifests/nextcloud/{{ item }}.yaml"
+    owner: "{{ user }}"
+    mode: '0644'
+  with_list:
+    - "httproute"
+  when: nextcloud|default(false)|bool == true
+
+- name: Apply HTTPRoute to nextcloud
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    src: "~/manifests/nextcloud/{{ item }}.yaml"
+  with_list:
+    - "httproute"
+  when: nextcloud|default(false)|bool == true
+
+- name: Remove nextcloud with helm
+  kubernetes.core.helm:
+    name: nextcloud
+    state: absent
+    release_namespace: default
+  when: nextcloud|default(false)|bool == false
+
+- name: Remove nextcloud HTTPRoute
+  kubernetes.core.k8s:
+    name: nextcloud
+    state: absent
+    kind: HTTPRoute
+    namespace: default
+  when: nextcloud|default(false)|bool == false

@@ -8,7 +8,7 @@
 - name: Set app and port variables for ghost app
   set_fact:
     app: ghost
-    port: 8003
+    http_port: 8003
 
 - name: Deploy ghost with Helm
   kubernetes.core.helm:
@@ -30,7 +30,7 @@
       service:
         type: ClusterIP
         ports:
-          http: 8003
+          http: "{{ http_port }}"
           #https:
       containerPorts:
         http: 2368
@@ -68,4 +68,5 @@
     name: ghost
     state: absent
     kind: HTTPRoute
+    namespace: default
   when: ghost|default(false)|bool == false
