@@ -134,7 +134,7 @@ spec:
         else:
             
             if 'EMAIL' in socials[each]["name"]: #what a mess
-              custom_env = ["EMAIL", "EMAIL_ALT"]
+              custom_env = ["EMAIL", "EMAIL_TEXT", "EMAIL_ALT", "EMAIL_ALT_TEXT"]
               
               for item in custom_env:
                 deployment.writelines(f'''        - name: {item}

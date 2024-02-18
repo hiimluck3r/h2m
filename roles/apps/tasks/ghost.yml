@@ -12,6 +12,14 @@
 
 - name: Deploy ghost with Helm
   kubernetes.core.helm:
+    #CAUTION START
+    livenessProbe:
+      enabled: false
+    readinessProbe:
+      enabled: false
+    startupProbe:
+      enabled: false
+    #CAUTION END
     name: ghost
     state: present
     chart_ref: oci://registry-1.docker.io/bitnamicharts/ghost

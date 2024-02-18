@@ -8,7 +8,7 @@
 - name: Set app and port variables for littlelink app
   set_fact:
     app: littlelink
-    port: 8002
+    http_port: 8002
 
 - name: Render littlelink manifests
   template:
