@@ -29,6 +29,13 @@
       grafana:
         adminPassword: "{{ password }}"
         defaultDashboardsTimezone: "{{ TZ }}"
+        persistence:
+          enabled: true
+          type: pvc
+          accessModes:
+            - ReadWriteOnce
+          size: 5Gi
+          storageClassName: "local-path"
   when: monitoring|default(false)|bool == true
 
 - name: Render grafana HTTPRoute manifest
