@@ -18,20 +18,20 @@
 
 - name: Deploy nextcloud with Helm
   kubernetes.core.helm:
-    #CAUTION START
-    livenessProbe:
-      enabled: false
-    readinessProbe:
-      enabled: false
-    startupProbe:
-      enabled: false
-    #CAUTION END
     update_repo_cache: true
     name: nextcloud
     state: present
     chart_ref: nextcloud/nextcloud
     release_namespace: default
     values:
+    #CAUTION START
+      livenessProbe:
+        enabled: false
+      readinessProbe:
+        enabled: false
+      startupProbe:
+        enabled: false
+      #CAUTION END
       nextcloud:
         host: "nextcloud.{{ domain }}"
         username: "{{ user }}"
@@ -95,9 +95,8 @@
     release_namespace: default
   when: nextcloud|default(false)|bool == false
 
-- name: Remove nextcloud pvc
-  kubernetes.core.k8s:
-    
+#- name: Remove nextcloud pvc
+#  kubernetes.core.k8s:
 
 - name: Remove nextcloud HTTPRoute
   kubernetes.core.k8s:

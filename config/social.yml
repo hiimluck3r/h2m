@@ -1,17 +1,18 @@
 YOUTUBE: ON | Video
-TWITCH: ON | Streams
-TWITTER: ON | Microblog
+TWITCH: OFF | Streams
+TWITTER: OFF | Microblog
 GITHUB: ON | IT Hub
-INSTAGRAM: ON | Photos
-LINKED_IN: ON | Job
-DISCORD: ON | Calls
-FACEBOOK: ON | Social
-TIKTOK: ON | Short Vids
+INSTAGRAM: OFF | Photos
+LINKED_IN: OFF | Job
+DISCORD: OFF | Calls
+FACEBOOK: OFF | Social
+TIKTOK: OFF | Short Vids
 CUSTOM: ON | Your custom buttons
-PATREON: ON | Subscribe based platform
+PATREON: OFF | Subscribe based platform
 TELEGRAM: ON | Messenger
-STEAM: ON | Videogames
-SPOTIFY: ON | Music
-REDDIT: ON | Popular forum
+STEAM: OFF | Videogames
+SPOTIFY: OFF | Music
+REDDIT: OFF | Popular forum
 EMAIL: ON | Your email
-GHOST: ON | Web-blogging platform
+EMAIL_ALT: ON | Alternative email button
+GHOST: OFF | Web-blogging platform

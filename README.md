@@ -141,6 +141,7 @@ Technologies used in the project:
 *   Python
 *   Bash
 *   Proxmox
+*   k3sup
 
 <h2>🛡️ License:</h2>
 

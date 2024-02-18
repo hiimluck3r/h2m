@@ -12,19 +12,19 @@
 
 - name: Deploy ghost with Helm
   kubernetes.core.helm:
-    #CAUTION START
-    livenessProbe:
-      enabled: false
-    readinessProbe:
-      enabled: false
-    startupProbe:
-      enabled: false
-    #CAUTION END
     name: ghost
     state: present
     chart_ref: oci://registry-1.docker.io/bitnamicharts/ghost
     release_namespace: default
     values:
+    #CAUTION START
+      livenessProbe:
+        enabled: false
+      readinessProbe:
+        enabled: false
+      startupProbe:
+        enabled: false
+      #CAUTION END
       ghostUsername: "{{ ghostUsername }}"
       ghostEmail: "{{ email }}"
       ghostPassword: "{{ password }}"
@@ -35,6 +35,8 @@
         auth:
           rootPassword: "{{ password }}"
           password: "{{ password }}"
+      externalDatabase:
+        password: "{{ password }}"
       service:
         type: ClusterIP
         ports:
@@ -42,7 +44,14 @@
           #https:
       containerPorts:
         http: 2368
-        #https: 
+        #https:
+      command:
+        - "/opt/bitnami/mysql/bin/mysqld"
+        - "--defaults-file=/opt/bitnami/mysql/conf/my.cnf"
+        - "--basedir=/opt/bitnami/mysql"
+        - "--datadir=/bitnami/mysql/data"
+        - "--socket=/opt/bitnami/mysql/tmp/mysql.sock"
+        - "--pid-file=/opt/bitnami/mysql/tmp/mysqld.pid"
   when: ghost|default(false)|bool == true
 
 - name: Render ghost HTTPRoute manifest

@@ -69,22 +69,8 @@ spec:
           value: "{{ BUTTON_ORDER }}"
         - name: YOUTUBE
           value: "{{ YOUTUBE }}"
-        - name: TWITCH
-          value: "{{ TWITCH }}"
-        - name: TWITTER
-          value: "{{ TWITTER }}"
         - name: GITHUB
           value: "{{ GITHUB }}"
-        - name: INSTAGRAM
-          value: "{{ INSTAGRAM }}"
-        - name: LINKED_IN
-          value: "{{ LINKED_IN }}"
-        - name: DISCORD
-          value: "{{ DISCORD }}"
-        - name: FACEBOOK
-          value: "{{ FACEBOOK }}"
-        - name: TIKTOK
-          value: "{{ TIKTOK }}"
         - name: CUSTOM_BUTTON_TEXT
           value: "{{ CUSTOM_BUTTON_TEXT }}"
         - name: CUSTOM_BUTTON_URL
@@ -99,15 +85,13 @@ spec:
           value: "{{ CUSTOM_BUTTON_NAME }}"
         - name: CUSTOM_BUTTON_ICON
           value: "{{ CUSTOM_BUTTON_ICON }}"
-        - name: PATREON
-          value: "{{ PATREON }}"
         - name: TELEGRAM
           value: "{{ TELEGRAM }}"
-        - name: STEAM
-          value: "{{ STEAM }}"
-        - name: SPOTIFY
-          value: "{{ SPOTIFY }}"
-        - name: REDDIT
-          value: "{{ REDDIT }}"
         - name: EMAIL
           value: "{{ EMAIL }}"
+        - name: EMAIL_TEXT
+          value: "{{ EMAIL_TEXT }}"
+        - name: EMAIL_ALT
+          value: "{{ EMAIL_ALT }}"
+        - name: EMAIL_ALT_TEXT
+          value: "{{ EMAIL_ALT_TEXT }}"
