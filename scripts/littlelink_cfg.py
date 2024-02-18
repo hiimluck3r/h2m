@@ -138,11 +138,11 @@ spec:
               
               for item in custom_env:
                 deployment.writelines(f'''        - name: {item}
-            value: "{{{{ { item } }}}}"\n''')
+          value: "{{{{ { item } }}}}"\n''')
             
             else:
               deployment.writelines(f'''        - name: {socials[each]["name"]}
-            value: "{{{{ { socials[each]["name"] } }}}}"\n''')
+          value: "{{{{ { socials[each]["name"] } }}}}"\n''')
 
 time.sleep(0.5)
 print('Done!')
