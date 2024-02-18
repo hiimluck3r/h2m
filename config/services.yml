@@ -1,7 +1,7 @@
 nextcloud: OFF | Cloud-suite
-calibre: OFF | Ebook-Library
-littlelink: OFF | LinkTree-selfhosted
+calibre: OFF | Ebook Library
+littlelink: OFF | Selfhosted linktree
 ghost: OFF | blog-webapp
 nginx: OFF | httpserver
 apache: OFF | httpserver
-monitoring: OFF | prometheus+grafana
+monitoring: OFF | Prometheus and Grafana

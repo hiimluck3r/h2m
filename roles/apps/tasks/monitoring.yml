@@ -1,0 +1,81 @@
+---
+- name: Create ~/manifests/monitoring directory if not exists
+  file:
+    path: "~/manifests/monitoring"
+    state: directory
+  when: monitoring|default(false)|bool == true
+
+- name: Set app and port variables for nginx app
+  set_fact:
+    app: monitoring-grafana
+    http_port: 80
+
+- name: Add prometheus-community helm repo
+  kubernetes.core.helm_repository:
+    name: prometheus-community
+    repo_url: "https://prometheus-community.github.io/helm-charts"
+  when: monitoring|default(false)|bool == true
+
+- name: Install monitoring stack
+  kubernetes.core.helm:
+    name: monitoring
+    chart_ref: prometheus-community/kube-prometheus-stack
+    chart_version: 56.7.0
+    release_namespace: default
+    update_repo_cache: true
+    values:
+      nameOverride: monitoring
+      namespaceOverride: default
+      grafana:
+        adminPassword: "{{ password }}"
+        defaultDashboardsTimezone: "{{ TZ }}"
+  when: monitoring|default(false)|bool == true
+
+- name: Render grafana HTTPRoute manifest
+  template:
+    src: "roles/apps/templates/{{ item }}.yaml.j2"
+    dest: "~/manifests/grafana/{{ item }}.yaml"
+    owner: "{{ user }}"
+    mode: '0644'
+  with_list:
+    - "httproute"
+  when: monitoring|default(false)|bool == true
+
+- name: Apply HTTPRoute to grafana
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    src: "~/manifests/grafana/{{ item }}.yaml"
+  with_list:
+    - "httproute"
+  when: monitoring|default(false)|bool == true
+
+- name: Remove monitoring stack
+  kubernetes.core.helm:
+    name: monitoring
+    state: absent
+    release_namespace: default
+  when: monitoring|default(false)|bool == false
+
+- name: Remove monitoring CRD
+  shell: "{{ item }}"
+  with_list:
+    - "kubectl delete crd alertmanagerconfigs.monitoring.coreos.com"
+    - "kubectl delete crd alertmanagers.monitoring.coreos.com"
+    - "kubectl delete crd podmonitors.monitoring.coreos.com"
+    - "kubectl delete crd probes.monitoring.coreos.com"
+    - "kubectl delete crd prometheusagents.monitoring.coreos.com"
+    - "kubectl delete crd prometheuses.monitoring.coreos.com"
+    - "kubectl delete crd prometheusrules.monitoring.coreos.com"
+    - "kubectl delete crd scrapeconfigs.monitoring.coreos.com"
+    - "kubectl delete crd servicemonitors.monitoring.coreos.com"
+    - "kubectl delete crd thanosrulers.monitoring.coreos.com"
+  when: monitoring|default(false)|bool == false
+
+- name: Remove grafana HTTPRoute
+  kubernetes.core.k8s:
+    name: monitoring
+    state: absent
+    kind: HTTPRoute
+    namespace: default
+  when: monitoring|default(false)|bool == false

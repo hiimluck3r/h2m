@@ -1,7 +1,6 @@
-nextcloud: OFF | Cloud-suite
+#Desired
 mailu: OFF | Mail-server
 codeserver: OFF | web-VSCode
-calibre: OFF | Ebook-Library
 jellyfin: OFF | Media-server
 jackett: OFF | Torrent-indexer
 sonarr: OFF | PVR-for-TV-shows
@@ -13,8 +12,8 @@ gitlab: OFF | GitLab
 gitlab_runner: OFF | GitLab-runner
 gitea: OFF | GitHub-with-a-cup-of-tea
 telegram-api: OFF | Local-Telegram-API
-linkstack: OFF | LinkTree-selfhosted
-ghost: OFF | blog-webapp
 pterodactyl: OFF | minecraft-server-panel
-nginx: OFF | reverse-proxy/loadbalancer/httpserver
 konga: OFF | KongIngressController-gui
+
+#Needs to be fixed
+ghost: OFF | blog-webapp

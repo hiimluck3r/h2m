@@ -10,7 +10,7 @@
     app: nextcloud
     http_port: 8004
 
-- name: Add NextCloud helm chart
+- name: Add NextCloud helm repo
   kubernetes.core.helm_repository:
     name: nextcloud
     repo_url: "https://nextcloud.github.io/helm/"
