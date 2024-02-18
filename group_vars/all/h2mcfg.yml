@@ -14,6 +14,7 @@ ghostBlogTitle: h2m Blog
 ghostEnableHttps: false
 
 #LittleLink
+TZ: Europe/Moscow
 META_TITLE: h2m
 META_DESCRIPTION: Example of meta description for h2m
 META_AUTHOR: hiimluck3r
@@ -57,5 +58,6 @@ TELEGRAM: https://t.me/imluck3r
 SPOTIFY: https://spotify.com
 REDDIT: https:/reddit.com
 EMAIL: mail@example.com
+EMAIL_ALT: mail@example.com
 STEAM: https://steamcommunity.com
 FOOTER: hiimluck3r © 2024

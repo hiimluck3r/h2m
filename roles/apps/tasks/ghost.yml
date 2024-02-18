@@ -60,6 +60,7 @@
   kubernetes.core.helm:
     name: ghost
     state: absent
+    release_namespace: default
   when: ghost|default(false)|bool == false
 
 - name: Remove ghost HTTPRoute

@@ -2,8 +2,14 @@ import os
 import yaml
 import subprocess
 import datetime
+import time
+from beaupy import confirm, prompt, select, select_multiple
+from beaupy.spinners import *
+from rich.console import Console
 
-print("""
+console = Console()
+
+console.print("""[blue]
 ██╗  ██╗██╗██╗███╗   ███╗                
 ██║  ██║██║██║████╗ ████║                
 ███████║██║██║██╔████╔██║                
@@ -19,24 +25,31 @@ print("""
 ╚══════╝╚═╝  ╚═╝╚═════╝  ╚═════╝ ╚══════╝
 --------
 Created by @hiimluck3r
-https://github.com/hiimluck3r/h2m
+https://github.com/hiimluck3r/h2m[/blue]
 """)
-user = input("Enter username (this username will be used for creating new nodes and for specific services): ")
+
+console.print("*Username is used for managing nodes and for different services.")
+user = input("Enter your username: ")
 domain = input("Enter domain of the cluster: ")
 email = input("Enter your email: ")
-password = input("Enter your password (this password will be used to manage some of the services): ")
+console.print("""[red]
+    ***
+    This password is going to be used to access different nodes and to configure specific applications.
+    ***
+    [/red]""")
+password = prompt("Enter your password: ", secure=True)
+
 while True:
     if len(password) < 10:
-        password = input("Weak password! Use 10 to 32 characters: ")
+        password = prompt("Weak password! Use 10 to 32 characters: ", secure=True)
     elif len(password) > 32:
-        password = input("Too much! Use 10 to 32 characters: ")
+        password = prompt("Too much! Use 10 to 32 characters: ", secure=True)
     else:
         break
 
-print(f"User: {user}")
+print(f"\nUser: {user}")
 print(f"Domain: {domain}")
 print(f"E-mail: {email}")
-print(f"Password: {password}") #should you even see it?
 
 confirmation = input("Proceed? (y/n): ")
 if confirmation != "y":
@@ -44,11 +57,11 @@ if confirmation != "y":
     exit()
 
 while True:
-    print("""
+    console.print("""[yellow]
     ***
     Single-node: master and worker are on the same node
-    Multi-node: master and worker have different nodes
-    ***
+    Multi-node: master and worker have different nodes | [red] Currently unavailable [/red]
+    ***[/yellow]
     """)
     cluster_mode = input("Will the k3s cluster be single-node or multi-node? (s/m): ")
     if cluster_mode in ["s", "m"]:
@@ -100,19 +113,26 @@ if len(master_nodes) > 1:
     cp_vip = input("Enter free IP that will be used for Control-Plane LoadBalancer. It must be different from the IPs you entered above: ")
 
 #Service LoadBalancer IP range
-cidr_global = input("Enter CIDR-based IP range (192.168.0.10/29 where /29 is subnet mask 255.255.255.248): ")
+console.print("""[yellow]
+    ***
+    CIDR-based IP example: 192.168.0.10/29.
+    /29 is subnet mask 255.255.255.248
+    ***[/yellow]
+""")
+cidr_global = input("Enter CIDR-based IP range: ")
 
+console.print("""[yellow]
+    ***
+    Example: eth0. You can check it with [red]ip addr[/red] on a virtual machine
+    ***[/yellow]
+""")
 kube_vip_interface = input("Enter network inteface that KubeVip will bind to: ")
 
 newline = '\n'
 
-print("""
----
-Creating ansible-inventory
-""")
+console.print("""---
+[red]Creating ansible-inventory...[/red]""")
 
-#I want to refactor it so badly
-#Please, try to implement newline with jinja-ish templating using f-strings
 with open("../inventory", "w") as inv_file:
     inv_file.write(f"""[leader]
 {master_nodes[0] if len(master_nodes)!=0 else ""}
@@ -134,7 +154,7 @@ quorum
 master
 cluster""")
 
-with open('example.txt', 'r') as littlelink_file:
+with open('littlelink_env.txt', 'r') as littlelink_file:
     littlelink_env = littlelink_file.read()
 
 with open("../group_vars/all/h2mcfg.yml", 'w') as sys_file:
@@ -165,4 +185,4 @@ password: {password}
 
 vault_encrypt = subprocess.call(["ansible-vault", "encrypt", "../group_vars/all/vault.yml"])
 
-print("Don't forget this password since it's the only way of decrypting secrets you provided before.")
+console.print("[red]Don't forget this password since it's the only way of decrypting secrets you provided before.[/red]")
