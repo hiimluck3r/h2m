@@ -25,7 +25,7 @@
     chart_ref: nextcloud/nextcloud
     release_namespace: default
     values:
-    #CAUTION START
+      #CAUTION START
       livenessProbe:
         enabled: false
       readinessProbe:
@@ -94,9 +94,6 @@
     state: absent
     release_namespace: default
   when: nextcloud|default(false)|bool == false
-
-#- name: Remove nextcloud pvc
-#  kubernetes.core.k8s:
 
 - name: Remove nextcloud HTTPRoute
   kubernetes.core.k8s:

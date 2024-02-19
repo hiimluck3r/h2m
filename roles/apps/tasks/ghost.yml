@@ -17,7 +17,7 @@
     chart_ref: oci://registry-1.docker.io/bitnamicharts/ghost
     release_namespace: default
     values:
-    #CAUTION START
+      #CAUTION START
       livenessProbe:
         enabled: false
       readinessProbe:
@@ -35,6 +35,14 @@
       ghostHost: "ghost.{{ domain }}"
       ghostEnableHttps: "{{ ghostEnableHttps }}"
       mysql:
+        primary:
+          command:
+            - "/opt/bitnami/mysql/bin/mysqld"
+            - "--defaults-file=/opt/bitnami/mysql/conf/my.cnf"
+            - "--basedir=/opt/bitnami/mysql"
+            - "--datadir=/bitnami/mysql/data"
+            - "--socket=/opt/bitnami/mysql/tmp/mysql.sock"
+            - "--pid-file=/opt/bitnami/mysql/tmp/mysqld.pid"
         auth:
           rootPassword: "{{ password }}"
           password: "{{ password }}"
@@ -48,13 +56,6 @@
       containerPorts:
         http: 2368
         #https:
-      command:
-        - "/opt/bitnami/mysql/bin/mysqld"
-        - "--defaults-file=/opt/bitnami/mysql/conf/my.cnf"
-        - "--basedir=/opt/bitnami/mysql"
-        - "--datadir=/bitnami/mysql/data"
-        - "--socket=/opt/bitnami/mysql/tmp/mysql.sock"
-        - "--pid-file=/opt/bitnami/mysql/tmp/mysqld.pid"
   when: ghost|default(false)|bool == true
 
 - name: Render ghost HTTPRoute manifest
