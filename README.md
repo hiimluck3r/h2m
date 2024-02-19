@@ -128,6 +128,14 @@ If using littlelink, run a special script to enable/disable specific social netw
 
 You can change the template to use your own links in **config/social.yml** (main template file) or in **group_vars/all/h2mconfig.yml** (filled in after running configure.sh or installer.py).
 
+---
+<h3>Storage configuration</h3>
+
+You can manage storage capacity for stateful applications in the following configs:
+
+* config/storage_cfg.yml (main template)
+* group_vars/all/h2mconfig.yml
+
 <h2>🍰 Contribution Guidelines:</h2>
 
 Contributions are what make the open source community such an amazing place to learn inspire and create. Any contributions you make are greatly appreciated. If you have a suggestion that would make this better please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement". Don't forget to give the project a star! Thanks again!
