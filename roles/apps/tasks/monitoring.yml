@@ -5,10 +5,11 @@
     state: directory
   when: monitoring|default(false)|bool == true
 
-- name: Set app and port variables for nginx app
+- name: Set app and port variables for grafana app
   set_fact:
+    strip_path: true
     app: monitoring-grafana
-    http_port: 80
+    http_port: 8005
 
 - name: Add prometheus-community helm repo
   kubernetes.core.helm_repository:
@@ -27,6 +28,8 @@
       nameOverride: monitoring
       namespaceOverride: default
       grafana:
+        service:
+          port: "{{ http_port }}"
         adminPassword: "{{ password }}"
         defaultDashboardsTimezone: "{{ TZ }}"
         persistence:
@@ -34,7 +37,7 @@
           type: pvc
           accessModes:
             - ReadWriteOnce
-          size: 5Gi
+          size: "{{ grafana_size }}"
           storageClassName: "local-path"
   when: monitoring|default(false)|bool == true
 
@@ -77,11 +80,12 @@
     - "kubectl delete crd scrapeconfigs.monitoring.coreos.com"
     - "kubectl delete crd servicemonitors.monitoring.coreos.com"
     - "kubectl delete crd thanosrulers.monitoring.coreos.com"
+  ignore_errors: true
   when: monitoring|default(false)|bool == false
 
 - name: Remove grafana HTTPRoute
   kubernetes.core.k8s:
-    name: monitoring
+    name: "{{ app }}"
     state: absent
     kind: HTTPRoute
     namespace: default

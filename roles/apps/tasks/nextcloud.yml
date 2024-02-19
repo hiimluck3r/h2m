@@ -7,6 +7,7 @@
 
 - name: Set app and port variables for nextcloud app
   set_fact:
+    strip_path: true
     app: nextcloud
     http_port: 8004
 
@@ -36,12 +37,8 @@
         host: "nextcloud.{{ domain }}"
         username: "{{ user }}"
         password: "{{ password }}"
-      primary:
-        persistence:
-          enabled: true
       service:
         port: "{{ http_port }}"
-      size: 8Gi
       internalDatabase:
         enabled: false
       externalDatabase:
@@ -67,6 +64,9 @@
           password: "{{ password }}"
       cronjob:
         enabled: true
+      persistence:
+        enabled: true
+        size: "{{ nextcloud_size }}"
   when: nextcloud|default(false)|bool == true
 
 - name: Render nextcloud HTTPRoute manifest
@@ -100,7 +100,7 @@
 
 - name: Remove nextcloud HTTPRoute
   kubernetes.core.k8s:
-    name: nextcloud
+    name: "{{ app }}"
     state: absent
     kind: HTTPRoute
     namespace: default

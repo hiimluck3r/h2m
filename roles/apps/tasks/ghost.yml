@@ -25,6 +25,9 @@
       startupProbe:
         enabled: false
       #CAUTION END
+      persistence:
+        enabled: true
+        size: "{{ ghost_size }}"
       ghostUsername: "{{ ghostUsername }}"
       ghostEmail: "{{ email }}"
       ghostPassword: "{{ password }}"
@@ -82,7 +85,7 @@
 
 - name: Remove ghost HTTPRoute
   kubernetes.core.k8s:
-    name: ghost
+    name: "{{ app }}"
     state: absent
     kind: HTTPRoute
     namespace: default

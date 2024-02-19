@@ -12,10 +12,10 @@ Currently **h2m** is a single-node **K3S** cluster, with **kube-vip-cloud-provid
 Initial set of applications:
 
 * HTTP servers (nginx, apache)
-* NextCloud | <span style="color:orange">Not fully persistent, see issue #1</span>
+* NextCloud
 * LittleLink
-* Calibre
-* Ghost | <span style="color:red">Pod start fails</span>
+* Kavita
+* Ghost | **Pod start fails**
 
 And also monitoring with:
 

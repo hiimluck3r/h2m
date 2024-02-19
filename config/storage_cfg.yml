@@ -1,0 +1,14 @@
+#Nextcloud storage capacity
+nextcloud_size: 2Gi
+
+#Kavita storage capacity
+kavita_books_size: 6Gi
+kavita_manga_size: 3Gi
+kavita_comics_size: 3Gi
+kavita_config_size: 2Gi
+
+#Ghost storage capacity
+ghost_size: 10Gi
+
+#Monitoring storage capacity
+grafana_size: 5Gi

@@ -7,6 +7,7 @@
 
 - name: Set app and port variables for apache app
   set_fact:
+    strip_path: true
     app: apache
     http_port: 8001
 

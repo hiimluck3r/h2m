@@ -1,0 +1,87 @@
+---
+- name: Create ~/manifests/kavita directory if not exists
+  file:
+    path: "~/manifests/kavita"
+    state: directory
+  when: kavita|default(false)|bool == true
+
+- name: Set app and port variables for kavita app
+  set_fact:
+    strip_path: false
+    app: kavita
+    http_port: 8006
+
+- name: Add truecharts helm repo
+  kubernetes.core.helm_repository:
+    name: truecharts
+    repo_url: "https://charts.truecharts.org"
+  when: kavita|default(false)|bool == true
+
+- name: Deploy kavita with Helm
+  kubernetes.core.helm:
+    name: kavita
+    state: present
+    chart_ref: truecharts/kavita
+    chart_version: 8.2.0
+    release_namespace: default
+    values:
+      service:
+        main:
+          ports:
+            main:
+              port: "{{ http_port }}"
+      persistence:
+        config:
+          size: "{{ kavita_config_size }}"
+          enabled: true
+          mountPath: /kavita/config
+        books:
+          size: "{{ kavita_books_size }}"
+          enabled: true
+          mountPath: /books
+        manga:
+          size: "{{ kavita_manga_size }}"
+          enabled: true
+          mountPath: /manga
+        comics:
+          size: "{{ kavita_comics_size }}"
+          enabled: true
+          mountPath: /comics
+      portal:
+        open:
+          enabled: true
+  when: kavita|default(false)|bool == true
+
+- name: Render kavita HTTPRoute manifest
+  template:
+    src: "roles/apps/templates/{{ item }}.yaml.j2"
+    dest: "~/manifests/kavita/{{ item }}.yaml"
+    owner: "{{ user }}"
+    mode: '0644'
+  with_list:
+    - "httproute"
+  when: kavita|default(false)|bool == true
+
+- name: Apply HTTPRoute to kavita
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    src: "~/manifests/kavita/{{ item }}.yaml"
+  with_list:
+    - "httproute"
+  when: kavita|default(false)|bool == true
+
+- name: Remove kavita with helm
+  kubernetes.core.helm:
+    name: kavita
+    state: absent
+    release_namespace: default
+  when: kavita|default(false)|bool == false
+
+- name: Remove kavita HTTPRoute
+  kubernetes.core.k8s:
+    name: "{{ app }}"
+    state: absent
+    kind: HTTPRoute
+    namespace: default
+  when: kavita|default(false)|bool == false

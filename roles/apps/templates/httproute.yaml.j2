@@ -4,7 +4,7 @@ kind: HTTPRoute
 metadata:
   name: {{ app }}
   annotations:
-    konghq.com/strip-path: 'true'
+    konghq.com/strip-path: '{{ strip_path }}'
 spec:
   parentRefs:
   - name: kong

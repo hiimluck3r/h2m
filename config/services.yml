@@ -1,5 +1,5 @@
 nextcloud: OFF | Cloud-suite
-calibre: OFF | Ebook Library
+kavita: OFF | Ebook Library
 littlelink: OFF | Selfhosted linktree
 ghost: OFF | blog-webapp
 nginx: OFF | httpserver

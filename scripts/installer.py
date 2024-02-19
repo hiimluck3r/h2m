@@ -153,8 +153,14 @@ quorum
 master
 cluster""")
 
-with open('../config/littlelink_env.yaml', 'r') as littlelink_file:
+with open('../config/littlelink_env.yml', 'r') as littlelink_file:
     littlelink_env = littlelink_file.read()
+
+with open("/etc/timezone", 'r') as tz_file:
+    timezone = tz_file.read()
+
+with open("../config/storage_cfg.yml", 'r') as storage_file:
+    storage_cfg = storage_file.read()
 
 with open("../group_vars/all/h2mcfg.yml", 'w') as sys_file:
     sys_file.write(f"""---
@@ -165,7 +171,11 @@ user: {user}
 kube_vip_interface: {kube_vip_interface}
 kube_vip_version: v0.6.4
 
+#Storage config
+{storage_cfg}
+
 #Applications
+TZ: {timezone}
 
 #Ghost
 ghostUsername: user
