@@ -57,6 +57,7 @@
         primary:
           persistence:
             enabled: true
+            size: "{{ nextcloud_psql_size }}"
       redis:
         enabled: true
         auth:

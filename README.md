@@ -15,7 +15,7 @@ Initial set of applications:
 * NextCloud
 * LittleLink
 * Kavita
-* Ghost | **Pod start fails**
+* Ghost
 
 And also monitoring with:
 

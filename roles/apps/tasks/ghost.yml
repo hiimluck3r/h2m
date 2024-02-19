@@ -8,7 +8,7 @@
 - name: Set app and port variables for ghost app
   set_fact:
     app: ghost
-    http_port: 8003
+    http_port: 80 #the only valid port for ghost installation is 80, otherwise it gets rewritten
 
 - name: Deploy ghost with Helm
   kubernetes.core.helm:
@@ -34,15 +34,20 @@
       ghostBlogTitle: "{{ ghostBlogTitle }}"
       ghostHost: "ghost.{{ domain }}"
       ghostEnableHttps: "{{ ghostEnableHttps }}"
+      allowEmptyPassword: "{{ allowEmptyPassword }}"
       mysql:
         primary:
-          command:
-            - "/opt/bitnami/mysql/bin/mysqld"
-            - "--defaults-file=/opt/bitnami/mysql/conf/my.cnf"
-            - "--basedir=/opt/bitnami/mysql"
-            - "--datadir=/bitnami/mysql/data"
-            - "--socket=/opt/bitnami/mysql/tmp/mysql.sock"
-            - "--pid-file=/opt/bitnami/mysql/tmp/mysqld.pid"
+          persistence:
+            enabled: true
+            size: "{{ ghost_mysql_size }}"
+          #CAUTION START
+          livenessProbe:
+            enabled: false
+          readinessProbe:
+            enabled: false
+          startupProbe:
+            enabled: false
+          #CAUTION END
         auth:
           rootPassword: "{{ password }}"
           password: "{{ password }}"

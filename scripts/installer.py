@@ -159,6 +159,9 @@ with open('../config/littlelink_env.yml', 'r') as littlelink_file:
 with open("/etc/timezone", 'r') as tz_file:
     timezone = tz_file.read()
 
+with open("../config/ghost_cfg.yml", 'r') as ghost_file:
+    ghost_env = ghost_file.read()
+
 with open("../config/storage_cfg.yml", 'r') as storage_file:
     storage_cfg = storage_file.read()
 
@@ -178,9 +181,7 @@ kube_vip_version: v0.6.4
 TZ: {timezone}
 
 #Ghost
-ghostUsername: user
-ghostBlogTitle: h2m Blog
-ghostEnableHttps: false
+{ghost_env}
 
 #LittleLink
 {littlelink_env} {datetime.date.today().year}

@@ -1,5 +1,6 @@
 #Nextcloud storage capacity
-nextcloud_size: 2Gi
+nextcloud_size: 10Gi
+nextcloud_psql_size: 5Gi
 
 #Kavita storage capacity
 kavita_books_size: 6Gi
@@ -9,6 +10,7 @@ kavita_config_size: 2Gi
 
 #Ghost storage capacity
 ghost_size: 10Gi
+ghost_mysql_size: 5Gi
 
 #Monitoring storage capacity
 grafana_size: 5Gi
