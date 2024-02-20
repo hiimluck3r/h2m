@@ -1,3 +1,4 @@
+pagenotfound: ON | Simple "404" page based on nginx (listens *.domain.com)
 nextcloud: OFF | Cloud-suite
 kavita: OFF | Ebook Library
 littlelink: OFF | Selfhosted linktree

@@ -1,0 +1,20 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pagenotfound
+spec:
+  selector:
+    matchLabels:
+      app: pagenotfound
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pagenotfound
+    spec:
+      containers:
+      - name: pagenotfound
+        image: luck3rinc/pagenotfound
+        ports:
+        - containerPort: 80

@@ -1,0 +1,45 @@
+---
+- name: Create ~/manifests/pagenotfound directory if not exists
+  file:
+    path: "~/manifests/pagenotfound"
+    state: directory
+  when: pagenotfound|default(false)|bool == true
+
+- name: Set app and port variables for pagenotfound app
+  set_fact:
+    strip_path: true
+    app: pagenotfound
+    http_port: 404
+
+- name: Render pagenotfound manifests
+  template:
+    src: "roles/apps/manifests/pagenotfound/{{ item }}.yaml"
+    dest: "~/manifests/pagenotfound/{{ item }}.yaml"
+    owner: "{{ user }}"
+    mode: '0644'
+  with_list:
+    - "deployment"
+    - "service"
+    - "httproute"
+
+- name: Install pagenotfound
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    src: "~/manifests/pagenotfound/{{ item }}.yaml"
+  with_list:
+    - "deployment"
+    - "service"
+    - "httproute"
+  when: pagenotfound|default(false)|bool == true
+
+- name: Remove pagenotfound
+  kubernetes.core.k8s:
+    state: absent
+    namespace: default
+    src: "~/manifests/pagenotfound/{{ item }}.yaml"
+  with_list:
+      - "deployment"
+      - "service"
+      - "httproute"
+  when: pagenotfound|default(false)|bool == false
