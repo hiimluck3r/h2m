@@ -116,18 +116,6 @@ You can destroy your cluster with
 ```bash
 ./destroy.sh
 ```
-
----
-<h3>Littlelink</h3>
-
-If using littlelink, run a special script to enable/disable specific social networks. 
-
-```bash
-./littlelink_cfg.sh
-```
-
-You can change the template to use your own links in **config/social.yml** (main template file) or in **group_vars/all/h2mconfig.yml** (filled in after running configure.sh or installer.py).
-
 ---
 <h3>Storage configuration</h3>
 

@@ -69,12 +69,22 @@
 - name: Install cert-manager api token secret an cluster-issuer
   kubernetes.core.k8s:
     state: present
-    #namespace: default
+    namespace: default
     src: "~/manifests/cert-manager/{{ item }}.yaml"
   with_list:
     - api_token
     - cluster-issuer
   when: https|default(false)|bool == true
+
+- name: Delete cert-manager api token secret an cluster-issuer
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    src: "~/manifests/cert-manager/{{ item }}.yaml"
+  with_list:
+    - api_token
+    - cluster-issuer
+  when: https|default(false)|bool == false
 
 - name: Remove cert-manager
   kubernetes.core.helm:

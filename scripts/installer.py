@@ -209,7 +209,6 @@ https: {'true' if cloudflare_token!='' else 'false'}
 TZ: {timezone}
 
 #Ghost
-ghostEnableHttps: {'true' if cloudflare_token!='' else 'false'}
 {ghost_env}
 
 #LittleLink

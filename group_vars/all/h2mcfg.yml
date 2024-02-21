@@ -32,7 +32,6 @@ TZ: Europe/Moscow
 
 
 #Ghost
-ghostEnableHttps: true
 ghostUsername: hiimluck3r
 ghostBlogTitle: h2m Blog
 allowEmptyPassword: false

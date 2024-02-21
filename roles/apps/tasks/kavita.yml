@@ -5,6 +5,11 @@
     state: directory
   when: kavita|default(false)|bool == true
 
+- name: Upload upload_book.sh script
+  copy:
+    src: apps/manifests/kavita/upload_books.sh
+    dest: ~/manifests/kavita/upload_books.sh
+
 - name: Set app and port variables for kavita app
   set_fact:
     strip_path: false

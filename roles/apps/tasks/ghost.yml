@@ -33,7 +33,6 @@
       ghostPassword: "{{ password }}"
       ghostBlogTitle: "{{ ghostBlogTitle }}"
       ghostHost: "ghost.{{ domain }}"
-      ghostEnableHttps: "{{ ghostEnableHttps }}"
       allowEmptyPassword: "{{ allowEmptyPassword }}"
       mysql:
         primary:
