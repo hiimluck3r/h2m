@@ -30,6 +30,16 @@
 - name: Add helm cert-manager jetstack repo
   shell: helm repo add jetstack https://charts.jetstack.io --force-update && helm repo update
 
+- name: Set staging Let's Encrypt server for cert-manager
+  set_fact:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+  when: production_https|default(false)|bool == false
+
+- name: Set production Let's Encrypt server for cert-manager
+  set_fact:
+    server: https://acme-v02.api.letsencrypt.org/directory
+  when: production_https|default(false)|bool == true
+
 - name: Render cert-manager manifests
   template:
     src: 'roles/init/manifests/cert-manager/{{ item }}.yaml'

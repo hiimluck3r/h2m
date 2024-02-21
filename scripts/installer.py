@@ -127,6 +127,8 @@ console.print("""[yellow]
 """)
 kube_vip_interface = input("Enter network inteface that KubeVip will bind to: ")
 
+production_https = 'false'
+
 if confirm("\nUse HTTPS? For HTTPS connection you will need CloudFlare API Token to solve DNS01 challenge."):
     cloudflare_token = prompt("""[yellow]
     ***
@@ -145,6 +147,8 @@ if confirm("\nUse HTTPS? For HTTPS connection you will need CloudFlare API Token
 
 Enter CloudFlare API token: 
 """, secure=True)
+    if confirm("\nUse production Let's encrypt server? (You can change it manually in group_vars/all/h2mconfig.yml):"):
+        production_https = 'true'
 else:
     cloudflare_token = ''
 
@@ -189,6 +193,7 @@ with open("../config/storage_cfg.yml", 'r') as storage_file:
 with open("../group_vars/all/h2mcfg.yml", 'w') as sys_file:
     sys_file.write(f"""---
 #Cluster config
+production_https: {production_https}
 cp_vip: {cp_vip} #Control-plane Virtual IP
 cidr_global: {cidr_global} #CIDR-based kube-vip LoadBalancer IP range
 domain: {domain}

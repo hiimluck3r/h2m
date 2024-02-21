@@ -6,7 +6,7 @@ metadata:
 spec:
   ports:
   - name: http
-    port: {{ http_route }}
+    port: {{ http_port }}
     targetPort: 80
   selector:
     app: pagenotfound

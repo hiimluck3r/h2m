@@ -9,7 +9,7 @@ spec:
     # certificates, and issues related to your account.
     # Ansible will do all the work for you :)
     email: "{{ email }}"
-    server: https://acme-staging-v02.api.letsencrypt.org/directory
+    server: "{{ server }}"
     privateKeySecretRef:
       name: letsencrypt-private-key
 
