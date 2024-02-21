@@ -1,14 +1,17 @@
 ---
+#Cluster config
 cp_vip:  #Control-plane Virtual IP
 cidr_global: 192.168.0.10/29 #CIDR-based kube-vip LoadBalancer IP range
 domain: novodigital.ru
 user: h2m
 kube_vip_interface: eth0
 kube_vip_version: v0.6.4
+https: true
 
 #Storage config
 #Nextcloud storage capacity
-nextcloud_size: 2Gi
+nextcloud_size: 10Gi
+nextcloud_psql_size: 5Gi
 
 #Kavita storage capacity
 kavita_books_size: 6Gi
@@ -18,6 +21,7 @@ kavita_config_size: 2Gi
 
 #Ghost storage capacity
 ghost_size: 10Gi
+ghost_mysql_size: 5Gi
 
 #Monitoring storage capacity
 grafana_size: 5Gi
@@ -25,10 +29,12 @@ grafana_size: 5Gi
 #Applications
 TZ: Europe/Moscow
 
+
 #Ghost
-ghostUsername: user
+ghostEnableHttps: true
+ghostUsername: hiimluck3r
 ghostBlogTitle: h2m Blog
-ghostEnableHttps: false
+allowEmptyPassword: false
 
 #LittleLink
 META_TITLE: h2m

@@ -1,0 +1,1 @@
+#usage example: ./uploadbook.sh /books/LinuxBible https://sitewithyourbook.com/ linuxbible.pdf

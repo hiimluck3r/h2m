@@ -127,6 +127,27 @@ console.print("""[yellow]
 """)
 kube_vip_interface = input("Enter network inteface that KubeVip will bind to: ")
 
+if confirm("\nUse HTTPS? For HTTPS connection you will need CloudFlare API Token to solve DNS01 challenge."):
+    cloudflare_token = prompt("""[yellow]
+    ***
+    DNS01 challenge creates temporary DNS-record to confirm than you are domain's owner.
+    The only supported provider (at least for now) is CloudFlare.
+
+    To create CloudFlare API token:
+    1. Go to User Profile (My Profile)
+    2. API Tokens -> Create API Token
+    3. Configure the following permissions:
+        [white]Zone - DNS - Edit
+        Zone - Zone - Red[/white]
+    4. Configure the following Zone resources:
+        [white]Include - All Zones[/white]
+    ***[/yellow]
+
+Enter CloudFlare API token: 
+""", secure=True)
+else:
+    cloudflare_token = ''
+
 newline = '\n'
 
 console.print("""---
@@ -167,12 +188,14 @@ with open("../config/storage_cfg.yml", 'r') as storage_file:
 
 with open("../group_vars/all/h2mcfg.yml", 'w') as sys_file:
     sys_file.write(f"""---
+#Cluster config
 cp_vip: {cp_vip} #Control-plane Virtual IP
 cidr_global: {cidr_global} #CIDR-based kube-vip LoadBalancer IP range
 domain: {domain}
 user: {user}
 kube_vip_interface: {kube_vip_interface}
 kube_vip_version: v0.6.4
+https: {'true' if cloudflare_token!='' else 'false'}
 
 #Storage config
 {storage_cfg}
@@ -181,6 +204,7 @@ kube_vip_version: v0.6.4
 TZ: {timezone}
 
 #Ghost
+ghostEnableHttps: {'true' if cloudflare_token!='' else 'false'}
 {ghost_env}
 
 #LittleLink
@@ -191,6 +215,7 @@ with open("../group_vars/all/vault.yml", 'w') as vault_file:
     vault_file.write(f"""---
 email: {email}
 password: {password}
+cloudflare_token: {cloudflare_token}
 """)
 
 vault_encrypt = subprocess.call(["ansible-vault", "encrypt", "../group_vars/all/vault.yml"])
