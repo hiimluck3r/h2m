@@ -19,4 +19,4 @@ spec:
     backendRefs:
     - name: pagenotfound
       kind: Service
-      port: "{{ http_port }}"
+      port: {{ http_port }}

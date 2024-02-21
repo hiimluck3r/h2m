@@ -18,11 +18,39 @@ metadata:
 spec:
   gatewayClassName: kong
   listeners:
-  - name: https
+  - name: http-1
     port: 80
-    hostnames:
-    - "*.{{ domain }}"
-    - "{{ domain }}"
+    hostname: "*.{{ domain }}"
+    protocol: HTTP
+    allowedRoutes:
+      namespaces:
+        from: All
+
+  - name: http-2
+    port: 80
+    hostname: "{{ domain }}"
+    protocol: HTTP
+    allowedRoutes:
+      namespaces:
+        from: All
+
+  - name: https-1
+    port: 443
+    hostname: "*.{{ domain }}"
+    protocol: HTTPS
+    allowedRoutes:
+      namespaces:
+        from: All
+    tls:
+      mode: Terminate
+      certificateRefs:
+        - name: wildcard-tls
+          kind: Secret
+          group: core
+  
+  - name: https-2
+    port: 443
+    hostname: "{{ domain }}"
     protocol: HTTPS
     allowedRoutes:
       namespaces:
