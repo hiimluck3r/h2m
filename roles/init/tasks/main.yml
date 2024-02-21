@@ -21,6 +21,29 @@
       data:
         cidr-global: "{{ cidr_global }}"
 
+- name: Add helm cert-manager jetstack repo
+  shell: helm repo add jetstack https://charts.jetstack.io --force-update && helm repo update
+  
+- name: Install cert-manager
+  kubernetes.core.helm:
+    state: present
+    name: cert-manager
+    chart_ref: jetstack/cert-manager
+    release_namespace: cert-manager
+    version: v1.14.2
+    installCRDs: true
+    replicaCount: 1
+    extraArgs:
+      - "--feature-gates=ExperimentalGatewayAPISupport=true"
+  when: https|default(false)|bool == true
+
+- name: Remove cert-manager
+  kubernetes.core.helm:
+    name: cert-manager
+    release_namespace: cert-manager
+    state: absent
+  when: https|default(false)|bool == false
+
 - name: Install Kong Ingress Controller CRD
   kubernetes.core.k8s:
     state: present
@@ -33,11 +56,21 @@
     owner: "{{ user }}"
     mode: '0644'
 
+- name: Set Kong Gateway to HTTP
+  set_fact:
+    con_mode: http
+  when: https|default(false)|bool == false
+
+- name: Set Kong Gateway to HTTP
+  set_fact:
+    con_mode: https
+  when: https|default(false)|bool == true
+
 - name: Install Kong GatewayClass and Gateway
   kubernetes.core.k8s:
     state: present
     namespace: default
-    src: "~/manifests/kong-gateway.yaml"
+    src: "~/manifests/kong/{{ con_mode }}-kong-gateway.yaml"
 
 - name: Add Kong helm chart
   kubernetes.core.helm_repository:
