@@ -9,6 +9,7 @@
   copy:
     src: apps/manifests/kavita/upload_books.sh
     dest: ~/manifests/kavita/upload_books.sh
+  when: kavita|default(false)|bool == true
 
 - name: Set app and port variables for kavita app
   set_fact:

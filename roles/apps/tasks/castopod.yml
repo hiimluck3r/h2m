@@ -43,11 +43,11 @@
     namespace: default
     src: "~/manifests/castopod/{{ item }}.yaml"
   with_list:
-    - "mariadb-statefulset"
-    - "mariadb-svc"
     - "redis-cm"
     - "redis-statefulset"
     - "redis-svc"
+    - "mariadb-statefulset"
+    - "mariadb-svc"
     - "pvc"
     - "svc"
     - "deployment"
@@ -60,15 +60,15 @@
     namespace: default
     src: "~/manifests/castopod/{{ item }}.yaml"
   with_list:
-    - "mariadb-statefulset"
-    - "mariadb-svc"
+    - "httproute"
+    - "deployment"
     - "redis-cm"
     - "redis-statefulset"
     - "redis-svc"
+    - "mariadb-statefulset"
+    - "mariadb-svc"
     - "pvc"
     - "svc"
-    - "deployment"
-    - "httproute"
   when: castopod|default(false)|bool == false
 
 - name: Remove persistent data (both redis and postgres)
@@ -78,8 +78,8 @@
     kind: PersistentVolumeClaim
     name: "{{ item }}"
   with_list:
-    - "data-redis-0"
-    - "data-redis-1"
-    - "data-reis-2"
-    - "data-mariadb-0"
+    - "data-castopod-redis-0"
+    - "data-castopod-redis-1"
+    - "data-castopod-redis-2"
+    - "data-castopod-mariadb-0"
     

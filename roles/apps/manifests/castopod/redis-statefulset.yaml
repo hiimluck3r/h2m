@@ -68,7 +68,7 @@ spec:
       name: data
     spec:
       accessModes: [ "ReadWriteOnce" ]
-      storageClassName: ""
+      storageClassName: "local-path" #change to your preferred sc
       resources:
         requests:
           storage: {{ castopod_redis_size }}

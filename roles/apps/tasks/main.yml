@@ -5,6 +5,7 @@
   with_items:
     - "pagenotfound"
     - "monitoring"
+    - "castopod"
     - "nginx"
     - "apache"
     - "ghost"

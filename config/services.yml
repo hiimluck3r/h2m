@@ -6,3 +6,4 @@ ghost: OFF | blog-webapp
 nginx: OFF | httpserver
 apache: OFF | httpserver
 monitoring: OFF | Prometheus and Grafana
+castopod: OFF | Selfhost your podcast
