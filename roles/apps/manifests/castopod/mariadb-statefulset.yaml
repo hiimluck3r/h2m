@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: castopod-mariadb
+spec:
+  serviceName: castopod-mariadb
+  replicas: 1
+  selector:
+    matchLabels:
+      app: castopod-mariadb
+  template:
+    metadata:
+      labels:
+        app: castopod-mariadb
+    spec:
+      containers:
+      - name: castopod-mariadb
+        image: mariadb:10.5
+        ports:
+        - containerPort: 3306
+          name: cp-db-port
+        env:
+        - name: MARIADB_ROOT_PASSWORD
+          value: {{ castopod_mysql_password }}
+        - name: MARIADB_DATABASE
+          value: castopod
+        - name: MARIADB_USER
+          value: castopod
+        - name: MARIADB_PASSWORD
+          value: {{ castopod_mysql_password }}
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: ""
+      resources:
+        requests:
+          storage: {{ castopod_mysql_size }}

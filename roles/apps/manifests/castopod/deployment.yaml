@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: castopod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: castopod
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: castopod
+    spec:
+      containers:
+        - env:
+            - name: CP_ANALYTICS_SALT
+              value: {{ castopod_redis_salt }}
+            - name: CP_BASEURL
+              value: https://{{ app }}.{{ domain }}
+            - name: CP_CACHE_HANDLER
+              value: redis
+            - name: CP_DISABLE_HTTPS
+              value: 1
+            - name: CP_REDIS_HOST
+              value: castopod-redis
+            - name: CP_REDIS_PASSWORD
+              value: {{ castopod_redis_password }}
+            - name: CP_DATABASE_HOSTNAME
+              value: castopod-mariadb
+            - name: MYSQL_DATABASE
+              value: castopod
+            - name: MYSQL_PASSWORD
+              value: {{ castopod_mysql_password }}
+            - name: MYSQL_USER
+              value: castopod
+          image: castopod/castopod:latest
+          name: castopod
+          ports:
+            - containerPort: 8000
+          volumeMounts:
+            - mountPath: /var/www/castopod/public/media
+              name: castopod-media
+      volumes:
+        - name: castopod-media
+          persistentVolumeClaim:
+            claimName: castopod-media

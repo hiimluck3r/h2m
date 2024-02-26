@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: castopod-redis
+spec:
+  clusterIP: None
+  ports:
+  - port: 6379
+    targetPort: 6379
+    name: castopod-redis
+  selector:
+    app: castopod-redis
+    statefulset.kubernetes.io/pod-name: castopod-redis-0

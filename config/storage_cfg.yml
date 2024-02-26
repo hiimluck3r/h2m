@@ -14,3 +14,8 @@ ghost_mysql_size: 5Gi
 
 #Monitoring storage capacity
 grafana_size: 5Gi
+
+#Castopod storage capacity
+castopod_media_size: 5Gi
+castopod_mysql_size: 3Gi
+castopod_redis_size: 2Gi

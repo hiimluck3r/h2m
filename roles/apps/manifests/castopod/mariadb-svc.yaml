@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: castopod-mariadb
+spec:
+  clusterIP: None
+  ports:
+  - port: 3306
+    targetPort: 3306
+    name: cp-db-port
+  selector:
+    app: castopod-mariadb

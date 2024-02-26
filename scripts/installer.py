@@ -187,6 +187,9 @@ with open("/etc/timezone", 'r') as tz_file:
 with open("../config/ghost_cfg.yml", 'r') as ghost_file:
     ghost_env = ghost_file.read()
 
+with open("../config/castopod_env.yml", 'r') as castopod_file:
+    castopod_env = castopod_file.read()
+
 with open("../config/storage_cfg.yml", 'r') as storage_file:
     storage_cfg = storage_file.read()
 
@@ -207,6 +210,8 @@ https: {'true' if cloudflare_token!='' else 'false'}
 
 #Applications
 TZ: {timezone}
+#Castopod
+{castopod_env}
 
 #Ghost
 {ghost_env}

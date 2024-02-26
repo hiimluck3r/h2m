@@ -1,0 +1,3 @@
+castopod_redis_salt: changeme #I know it's bad
+castopod_redis_password: changeme
+castopod_mysql_password: changeme

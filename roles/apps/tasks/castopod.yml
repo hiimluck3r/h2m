@@ -1,0 +1,85 @@
+---
+- name: Create ~/manifests/castopod directory if not exists
+  file:
+    path: "~/manifests/castopod"
+    state: directory
+  when: castopod|default(false)|bool == true
+
+- name: Set app and port variables for castopod app
+  set_fact:
+    strip_path: true
+    app: castopod
+    http_port: 8007
+
+- name: Render castopod manifests
+  template:
+    src: "roles/apps/manifests/castopod/{{ item }}.yaml"
+    dest: "~/manifests/castopod/{{ item }}.yaml"
+    owner: "{{ user }}"
+    mode: '0644'
+  with_list:
+    - "mariadb-statefulset"
+    - "mariadb-svc"
+    - "redis-cm"
+    - "redis-statefulset"
+    - "redis-svc"
+    - "pvc"
+    - "svc"
+    - "deployment"
+
+- name: Render castopod HTTPRoute manifest
+  template:
+    src: "roles/apps/templates/{{ item }}.yaml.j2"
+    dest: "~/manifests/castopod/{{ item }}.yaml"
+    owner: "{{ user }}"
+    mode: '0644'
+  with_list:
+    - "httproute"
+  when: castopod|default(false)|bool == true
+
+- name: Install castopod
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    src: "~/manifests/castopod/{{ item }}.yaml"
+  with_list:
+    - "mariadb-statefulset"
+    - "mariadb-svc"
+    - "redis-cm"
+    - "redis-statefulset"
+    - "redis-svc"
+    - "pvc"
+    - "svc"
+    - "deployment"
+    - "httproute"
+  when: castopod|default(false)|bool == true
+
+- name: Remove castopod
+  kubernetes.core.k8s:
+    state: absent
+    namespace: default
+    src: "~/manifests/castopod/{{ item }}.yaml"
+  with_list:
+    - "mariadb-statefulset"
+    - "mariadb-svc"
+    - "redis-cm"
+    - "redis-statefulset"
+    - "redis-svc"
+    - "pvc"
+    - "svc"
+    - "deployment"
+    - "httproute"
+  when: castopod|default(false)|bool == false
+
+- name: Remove persistent data (both redis and postgres)
+  kubernetes.core.k8s:
+    state: absent
+    namespace: default
+    kind: PersistentVolumeClaim
+    name: "{{ item }}"
+  with_list:
+    - "data-redis-0"
+    - "data-redis-1"
+    - "data-reis-2"
+    - "data-mariadb-0"
+    
