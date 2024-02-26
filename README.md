@@ -9,13 +9,14 @@
 
 Currently **h2m** is a single-node **K3S** cluster, with **kube-vip-cloud-provider** and **Kong Gateway API** (Kong Ingress Controller) for communicating with nodes, provisioned with **Ansible**.
 
-Initial set of applications:
+Available set of applications:
 
 * HTTP servers (nginx, apache)
 * NextCloud
 * LittleLink
 * Kavita
 * Ghost
+* Castopod
 
 And also monitoring with:
 
