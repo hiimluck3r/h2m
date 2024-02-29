@@ -13,7 +13,3 @@ gitlab_runner: OFF | GitLab-runner
 gitea: OFF | GitHub-with-a-cup-of-tea
 telegram-api: OFF | Local-Telegram-API
 pterodactyl: OFF | minecraft-server-panel
-konga: OFF | KongIngressController-gui
-
-#Needs to be fixed
-ghost: OFF | blog-webapp

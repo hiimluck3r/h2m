@@ -7,3 +7,4 @@ nginx: OFF | httpserver
 apache: OFF | httpserver
 monitoring: OFF | Prometheus and Grafana
 castopod: OFF | Selfhost your podcast
+pterodactyl: OFF | Host your Minecraft server

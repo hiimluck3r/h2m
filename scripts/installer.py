@@ -184,11 +184,8 @@ with open('../config/littlelink_env.yml', 'r') as littlelink_file:
 with open("/etc/timezone", 'r') as tz_file:
     timezone = tz_file.read()
 
-with open("../config/ghost_cfg.yml", 'r') as ghost_file:
-    ghost_env = ghost_file.read()
-
-with open("../config/castopod_env.yml", 'r') as castopod_file:
-    castopod_env = castopod_file.read()
+with open("../config/apps_cfg.yml", 'r') as apps_file:
+    apps_env = apps_file.read()
 
 with open("../config/storage_cfg.yml", 'r') as storage_file:
     storage_cfg = storage_file.read()
@@ -210,11 +207,7 @@ https: {'true' if cloudflare_token!='' else 'false'}
 
 #Applications
 TZ: {timezone}
-#Castopod
-{castopod_env}
-
-#Ghost
-{ghost_env}
+{apps_env}
 
 #LittleLink
 {littlelink_env} {datetime.date.today().year}

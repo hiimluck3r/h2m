@@ -1,0 +1,27 @@
+---
+- name: Create ~/manifests/pterodactyl directory if not exists
+  file:
+    path: "~/manifests/pterodactyl"
+    state: directory
+  when: pterodactyl|default(false)|bool == true
+
+- name: Copy pterodactyl helm directory
+  copy:
+    src: apps/manifests/pterodactyl/
+    dest: ~/manifests/pterodactyl/
+
+- name: Deploy pterodactyl with Helm
+  kubernetes.core.helm:
+    name: pterodactyl
+    state: present
+    chart_ref: ~/manifests/pterodactyl
+    release_namespace: default
+    values: "{{ lookup('template', 'pterodactyl/values.yaml.j2') | from_yaml }}"
+  when: pterodactyl|default(false)|bool == true
+
+- name: Remove pterodactyl with helm
+  kubernetes.core.helm:
+    name: pterodactyl
+    state: absent
+    release_namespace: default
+  when: pterodactyl|default(false)|bool == false

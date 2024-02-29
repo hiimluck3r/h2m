@@ -8,3 +8,4 @@ nginx: OFF
 apache: OFF
 monitoring: OFF
 castopod: OFF
+pterodactyl: OFF
