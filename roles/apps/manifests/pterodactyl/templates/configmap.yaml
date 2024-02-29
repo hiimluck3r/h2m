@@ -5,10 +5,10 @@ metadata:
   namespace: {{ .Release.Namespace | quote }}
 data:
   DB_PASSWORD: {{ .Values.mariadb.auth.password }}
-  APP_URL: https://{{ .Values.ingress.panel }}
+  APP_URL: https://{{ .Values.httproute.panel }}
   APP_ENV: production
   APP_ENVIRONMENT_ONLY: "false"
-  APP_TIMEZONE: UTC
+  APP_TIMEZONE: {{ .Values.TZ }}
   CACHE_DRIVER: redis
   SESSION_DRIVER: redis
   QUEUE_DRIVER: redis
@@ -17,8 +17,8 @@ data:
   DB_USERNAME: kubectyl
   DB_PORT: "3306"
   KUBER_FULLNAME: {{ include "kuber.fullname" . }}
-  INGRESS_KUBER: {{ .Values.ingress.kuber }}
-  INGRESS_PANEL: {{ .Values.ingress.panel }}
+  INGRESS_KUBER: {{ .Values.httproute.kuber }}
+  INGRESS_PANEL: {{ .Values.httproute.panel }}
   {{- if .Values.panel.email }}
   LE_EMAIL: {{ .Values.panel.email }}
   {{- end }}

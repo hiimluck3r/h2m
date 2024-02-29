@@ -24,7 +24,7 @@ spec:
         - configMapRef:
             name: panel-config
         ports:
-        - containerPort: 80
+        - containerPort: 443 #default: 80
           name: web
         volumeMounts:
         - name: ssl-certs

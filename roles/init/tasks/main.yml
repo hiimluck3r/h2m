@@ -51,6 +51,20 @@
     - cluster-issuer
   when: https|default(false)|bool == true
 
+- name: Create cert-manager namespace
+  kubernetes.core.k8s:
+    api_version: v1
+    kind: Namespace
+    name: cert-manager
+    state: present
+
+- name: Create CloudFlare API Token secret
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    src: "~/manifests/cert-manager/api_token.yaml"
+  when: https|default(false)|bool == true
+
 - name: Install cert-manager
   kubernetes.core.helm:
     state: present
@@ -66,14 +80,11 @@
         - "--feature-gates=ExperimentalGatewayAPISupport=true"
   when: https|default(false)|bool == true
 
-- name: Install cert-manager api token secret an cluster-issuer
+- name: Install cert-manager cluster-issuer
   kubernetes.core.k8s:
     state: present
     namespace: default
-    src: "~/manifests/cert-manager/{{ item }}.yaml"
-  with_list:
-    - api_token
-    - cluster-issuer
+    src: "~/manifests/cert-manager/cluster-issuer.yaml"
   when: https|default(false)|bool == true
 
 - name: Delete cert-manager api token secret an cluster-issuer
@@ -103,7 +114,7 @@
     con_mode: http
   when: https|default(false)|bool == false
 
-- name: Set Kong Gateway to HTTP
+- name: Set Kong Gateway to HTTPS
   set_fact:
     con_mode: https
   when: https|default(false)|bool == true
