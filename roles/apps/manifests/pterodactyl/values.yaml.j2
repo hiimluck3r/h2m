@@ -14,6 +14,7 @@ httproute:
   kuber: kuber.{{ domain }}
 
 panel:
+  size: {{ pterodactyl_panel_size }}
   # The image for the Panel application
   image: ghcr.io/kubectyl/panel:v0.1.0-beta
   # The storage class to use for Panel's persistent volume
@@ -48,7 +49,7 @@ mariadb:
   primary:
     persistence:
       # The size of the primary MariaDB pod's persistent volume
-      size: 1Gi
+      size: {{ pterodactyl_mariadb_size }}
   secondary:
     # The number of secondary MariaDB replicas
     replicaCount: 0
@@ -62,7 +63,7 @@ redis:
   master:
     persistence:
       # The size of the Redis master pod's persistent volume
-      size: 1Gi
+      size: {{ pterodactyl_redis_size }}
   replica:
     # The number of Redis replicas
     replicaCount: 0
