@@ -3,7 +3,6 @@
   ansible.builtin.include_tasks:
     file: "{{ item }}.yml"
   with_items:
-    - "pterodactyl"
     - "pagenotfound"
     - "monitoring"
     - "castopod"
