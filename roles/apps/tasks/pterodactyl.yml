@@ -7,13 +7,13 @@
 
 - name: Copy pterodactyl helm directory
   copy:
-    src: apps/manifests/pterodactyl/
+    src: "{{ playbook_dir }}/roles/apps/manifests/pterodactyl/"
     dest: ~/manifests/pterodactyl/
   when: pterodactyl|default(false)|bool == true
 
 - name: Render pterodactyl manifests
   template:
-    src: "roles/apps/manifests/pterodactyl/panel.conf"
+    src: "{{ playbook_dir }}/roles/apps/manifests/pterodactyl/panel.conf.j2"
     dest: "~/manifests/pterodactyl/panel.conf"
     owner: "{{ user }}"
     mode: '0644'
