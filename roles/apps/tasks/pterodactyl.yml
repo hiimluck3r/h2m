@@ -11,6 +11,14 @@
     dest: ~/manifests/pterodactyl/
   when: pterodactyl|default(false)|bool == true
 
+- name: Render pterodactyl manifests
+  template:
+    src: "roles/apps/manifests/pterodactyl/panel.conf"
+    dest: "~/manifests/pterodactyl/panel.conf"
+    owner: "{{ user }}"
+    mode: '0644'
+  when: pterodactyl|default(false)|bool == true
+
 - name: Deploy pterodactyl with Helm
   kubernetes.core.helm:
     name: pterodactyl
@@ -19,9 +27,6 @@
     release_namespace: default
     values: "{{ lookup('template', '{{ hostvars[\"localhost\"][\"playbook_dir\"] }}/roles/apps/manifests/pterodactyl/values.yaml.j2') | from_yaml }}"
   when: pterodactyl|default(false)|bool == true
-
-#change /etc/nginx/http.d/panel.conf to not use ssl
-#php artisan p:user:make --admin=1 --name-first=User --name-last=Name --email=example@example.com --password=12345678 --username=test
 
 - name: Remove pterodactyl with helm
   kubernetes.core.helm:
