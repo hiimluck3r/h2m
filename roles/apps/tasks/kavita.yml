@@ -7,7 +7,7 @@
 
 - name: Upload upload_book.sh script
   copy:
-    src: apps/manifests/kavita/upload_books.sh
+    src: upload_books.sh
     dest: ~/manifests/kavita/upload_books.sh
   when: kavita|default(false)|bool == true
 

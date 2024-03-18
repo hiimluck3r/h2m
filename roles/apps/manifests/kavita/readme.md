@@ -2,6 +2,7 @@
 ### Related files and folders
 * roles/apps/manifests/kavita
 * roles/apps/tasks/kavita.yml
+* roles/apps/files/upload_book.sh
 
 ### Description
 Kavita is a rocket fueled self-hosted digital library which supports a vast array of file formats. 
