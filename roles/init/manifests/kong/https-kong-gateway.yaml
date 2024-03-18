@@ -2,7 +2,7 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: kong
+  name: "kong-{{ item }}"
   annotations:
     cert-manager.io/cluster-issuer: cluster-issuer
 spec:
@@ -16,7 +16,7 @@ spec:
       namespaces:
         from: All
 
-  - name: http-"{{ item }}-http-2"
+  - name: "{{ item }}-http-2"
     port: 80
     hostname: "{{ item }}"
     protocol: HTTP
