@@ -9,7 +9,6 @@
   copy:
     src: "{{ role_path }}/files/upload_books.sh"
     dest: ~/manifests/kavita/upload_books.sh
-    remote_src: yes
   when: kavita|default(false)|bool == true
 
 - name: Set app and port variables for kavita app
