@@ -51,7 +51,14 @@ spec:
           ports:
             - containerPort: 8000
           livenessProbe:
-            exec:
+            httpGet:
+              path: /cp-auth
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 6
+            successThreshold: 1
           volumeMounts:
             - mountPath: /var/www/castopod/public/media
               name: castopod-media
