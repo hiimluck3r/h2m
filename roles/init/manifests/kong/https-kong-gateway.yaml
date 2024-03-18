@@ -38,7 +38,7 @@ spec:
           kind: Secret
           group: core
   
-  - name: "{{ item }}-https-1"
+  - name: "{{ item }}-https-2"
     port: 443
     hostname: "{{ item }}"
     protocol: HTTPS
