@@ -7,7 +7,8 @@
 
 - name: Set app and port variables for ghost app
   set_fact:
-    app: ghost
+    app: "{{ ghost_subdomain }}"
+    domain: example1.com
     http_port: 80 #the only valid port for ghost installation is 80, otherwise it gets rewritten
 
 - name: Deploy ghost with Helm
@@ -32,7 +33,7 @@
       ghostEmail: "{{ email }}"
       ghostPassword: "{{ password }}"
       ghostBlogTitle: "{{ ghostBlogTitle }}"
-      ghostHost: "ghost.{{ domain }}"
+      ghostHost: "{{ ghost_subdomain }}.{{ domain }}"
       allowEmptyPassword: "{{ allowEmptyPassword }}"
       mysql:
         primary:

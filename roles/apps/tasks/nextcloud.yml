@@ -8,7 +8,8 @@
 - name: Set app and port variables for nextcloud app
   set_fact:
     strip_path: true
-    app: nextcloud
+    app: "{{ nextcloud_subdomain }}"
+    domain: example1.com
     http_port: 8004
 
 - name: Add NextCloud helm repo
@@ -34,7 +35,7 @@
         enabled: false
       #CAUTION END
       nextcloud:
-        host: "nextcloud.{{ domain }}"
+        host: "{{ nextcloud_subdomain }}.{{ domain }}"
         username: "{{ user }}"
         password: "{{ password }}"
       service:

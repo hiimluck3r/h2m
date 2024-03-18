@@ -1,32 +1,23 @@
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: GatewayClass
-metadata:
-  name: kong
-  annotations:
-    konghq.com/gatewayclass-unmanaged: 'true'
-spec:
-  controllerName: konghq.com/kic-gateway-controller
 
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: kong
+  name: "kong-{{ item }}"
 spec:
   gatewayClassName: kong
   listeners:
-  - name: http-1
+  - name: "{{ item }}-http-1"
     port: 80
-    hostname: "*.{{ domain }}"
+    hostname: "*.{{ item }}"
     protocol: HTTP
     allowedRoutes:
       namespaces:
         from: All
 
-  - name: http-2
+  - name: "{{ item }}-http-2"
     port: 80
-    hostname: "{{ domain }}"
+    hostname: "{{ item }}"
     protocol: HTTP
     allowedRoutes:
       namespaces:

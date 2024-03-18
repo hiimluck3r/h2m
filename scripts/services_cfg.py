@@ -1,11 +1,16 @@
 import time
+import yaml
 from beaupy import confirm, prompt, select, select_multiple
 from beaupy.spinners import *
+import re
 from rich.console import Console
 
 console = Console()
 
 services = []
+
+with open('../group_vars/all/h2mcfg.yml', 'r') as cfg_file:
+    config_info = yaml.safe_load(cfg_file)
 
 with open('../config/services.yml', 'r') as services_file:
     lines = services_file.readlines()
@@ -29,9 +34,6 @@ console.print("Select the applications you want to run:")
 items = select_multiple(item_options, tick_character='x', ticked_indices=ticked, return_indices=True)
 items = sorted(items)
 
-spinner = Spinner(DOTS, "Changing configuration...")
-spinner.start()
-
 #Change files
 with open('../config/services.yml', 'w') as services_file:
     for each in services:
@@ -47,6 +49,23 @@ with open('../group_vars/all/services.yml', 'w') as services_file:
             services_file.writelines(f"{each['name']}: ON\n")
         else:
             services_file.writelines(f"{each['name']}: OFF\n")
+
+for each in services:
+    if services.index(each) in items:
+        with open(f"../roles/apps/tasks/{each['name']}.yml", 'r') as task_file:
+            task_data = task_file.read()
+        
+        current_domain = re.findall(r'domain: .*', task_data)[0]
+        console.print(f'\nCurrent [yellow]{each["name"]}[/yellow] service [yellow]{current_domain}[/yellow]')
+        console.print(f'Configure domain for [yellow]{each["name"]}[/yellow] service: ')
+        domain = select(config_info['domains'], cursor='>')
+        task_data = task_data.replace(current_domain, f'domain: {domain}')
+        
+        with open(f"../roles/apps/tasks/{each['name']}.yml", 'w') as task_file:
+            task_file.write(task_data)
+
+spinner = Spinner(DOTS, "Changing configuration...")
+spinner.start()
 
 time.sleep(0.5)
 print('Done!')

@@ -7,7 +7,7 @@ metadata:
     konghq.com/strip-path: '{{ strip_path }}'
 spec:
   parentRefs:
-  - name: kong
+  - name: "kong-{{ domain }}"
   hostnames:
   - '*.{{ domain }}'
   #- "{{ domain }}" #use it only if you don't have any httproute to that domain

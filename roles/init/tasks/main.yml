@@ -119,18 +119,33 @@
     con_mode: https
   when: https|default(false)|bool == true
 
-- name: Render Kong Gateway manifest
+- name: Kong GatewayClass manifest
   template:
-    src: 'roles/init/manifests/kong/{{ con_mode }}-kong-gateway.yaml'
-    dest: '~/manifests/kong-gateway.yaml'
+    src: 'roles/init/manifests/kong/kong-gatewayclass.yaml'
+    dest: '~/manifests/kong-gatewayclass.yaml'
     owner: "{{ user }}"
     mode: '0644'
 
-- name: Install Kong GatewayClass and Gateway
+- name: Render Kong Gateway manifest #REDACT TO ADD FUNCTIONALITY FOR MULTIPLE DOMAINS
+  template:
+    src: 'roles/init/manifests/kong/{{ con_mode }}-kong-gateway.yaml'
+    dest: '~/manifests/{{ item }}-kong-gateway.yaml'
+    owner: "{{ user }}"
+    mode: '0644'
+  loop: "{{ domains|flatten(levels=1) }}"
+
+- name: Install Kong GatewayClass
   kubernetes.core.k8s:
     state: present
     namespace: default
-    src: "~/manifests/kong-gateway.yaml"
+    src: "~/manifests/kong-gatewayclass.yaml"
+  
+- name: Install Kong Gateways
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    src: "~/manifests/{{ item }}-kong-gateway.yaml"
+  loop: "{{ domains|flatten(levels=1) }}"
 
 - name: Add Kong helm chart
   kubernetes.core.helm_repository:

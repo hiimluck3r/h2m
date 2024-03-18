@@ -7,7 +7,7 @@ metadata:
     konghq.com/strip-path: '{{ strip_path }}'
 spec:
   parentRefs:
-  - name: kong
+  - name: kong-{{ domain }}
   hostnames:
   - '{{ app }}.{{ domain }}'
   rules:

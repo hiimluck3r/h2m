@@ -8,7 +8,8 @@
 - name: Set app and port variables for grafana app
   set_fact:
     strip_path: true
-    app: monitoring-grafana
+    app: "{{ monitoring_subdomain }}" #monitoring-grafana is the only one that is being indexed for now (maybe)
+    domain: example1.com
     http_port: 8005
 
 - name: Add prometheus-community helm repo

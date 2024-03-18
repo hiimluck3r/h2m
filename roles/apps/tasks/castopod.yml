@@ -8,7 +8,8 @@
 - name: Set app and port variables for castopod app
   set_fact:
     strip_path: true
-    app: castopod
+    app: "{{ castopod_subdomain }}"
+    domain: example1.com
     http_port: 8007
 
 - name: Render castopod manifests
@@ -18,6 +19,7 @@
     owner: "{{ user }}"
     mode: '0644'
   with_list:
+    - "secret"
     - "mariadb-statefulset"
     - "mariadb-svc"
     - "redis-cm"
@@ -43,6 +45,7 @@
     namespace: default
     src: "~/manifests/castopod/{{ item }}.yaml"
   with_list:
+    - "secret"
     - "redis-cm"
     - "redis-statefulset"
     - "redis-svc"
@@ -69,6 +72,7 @@
     - "mariadb-svc"
     - "pvc"
     - "svc"
+    - "secret"
   when: castopod|default(false)|bool == false
 
 - name: Remove persistent data (both redis and postgres)
