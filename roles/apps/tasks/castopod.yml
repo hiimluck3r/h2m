@@ -19,6 +19,7 @@
     owner: "{{ user }}"
     mode: '0644'
   with_list:
+    - "secret"
     - "mariadb-statefulset"
     - "mariadb-svc"
     - "redis-cm"
@@ -44,6 +45,7 @@
     namespace: default
     src: "~/manifests/castopod/{{ item }}.yaml"
   with_list:
+    - "secret"
     - "redis-cm"
     - "redis-statefulset"
     - "redis-svc"
@@ -70,6 +72,7 @@
     - "mariadb-svc"
     - "pvc"
     - "svc"
+    - "secret"
   when: castopod|default(false)|bool == false
 
 - name: Remove persistent data (both redis and postgres)

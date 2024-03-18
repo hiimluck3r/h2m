@@ -18,7 +18,10 @@ spec:
       containers:
         - env:
             - name: CP_ANALYTICS_SALT
-              value: "{{ castopod_redis_salt }}"
+              valueFrom:
+                secretKeyRef:
+                  name: castopod
+                  key: redis_salt
             - name: CP_BASEURL
               value: https://{{ app }}.{{ domain }}
             - name: CP_CACHE_HANDLER
@@ -28,19 +31,27 @@ spec:
             - name: CP_REDIS_HOST
               value: castopod-redis
             - name: CP_REDIS_PASSWORD
-              value: "{{ castopod_redis_password }}"
+              valueFrom:
+                secretKeyRef:
+                  name: castopod
+                  key: redis_password
             - name: CP_DATABASE_HOSTNAME
               value: castopod-mariadb
             - name: MYSQL_DATABASE
               value: castopod
             - name: MYSQL_PASSWORD
-              value: "{{ castopod_mysql_password }}"
+              valueFrom:
+                secretKeyRef:
+                  name: castopod
+                  key: mysql_password
             - name: MYSQL_USER
               value: castopod
           image: castopod/castopod:latest
           name: castopod
           ports:
             - containerPort: 8000
+          livenessProbe:
+            exec:
           volumeMounts:
             - mountPath: /var/www/castopod/public/media
               name: castopod-media
