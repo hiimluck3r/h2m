@@ -1,3 +1,4 @@
+
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
@@ -6,17 +7,17 @@ metadata:
 spec:
   gatewayClassName: kong
   listeners:
-  - name: http-1
+  - name: "{{ item }}-http-1"
     port: 80
-    hostname: "*.{{ domain }}"
+    hostname: "*.{{ item }}"
     protocol: HTTP
     allowedRoutes:
       namespaces:
         from: All
 
-  - name: http-2
+  - name: "{{ item }}-http-2"
     port: 80
-    hostname: "{{ domain }}"
+    hostname: "{{ item }}"
     protocol: HTTP
     allowedRoutes:
       namespaces:

@@ -10,7 +10,7 @@ spec:
   listeners:
   - name: http-1
     port: 80
-    hostname: "*.{{ domain }}"
+    hostname: "*.{{ item }}"
     protocol: HTTP
     allowedRoutes:
       namespaces:
@@ -18,7 +18,7 @@ spec:
 
   - name: http-2
     port: 80
-    hostname: "{{ domain }}"
+    hostname: "{{ item }}"
     protocol: HTTP
     allowedRoutes:
       namespaces:
@@ -26,7 +26,7 @@ spec:
 
   - name: https-1
     port: 443
-    hostname: "*.{{ domain }}"
+    hostname: "*.{{ item }}"
     protocol: HTTPS
     allowedRoutes:
       namespaces:
@@ -40,7 +40,7 @@ spec:
   
   - name: https-2
     port: 443
-    hostname: "{{ domain }}"
+    hostname: "{{ item }}"
     protocol: HTTPS
     allowedRoutes:
       namespaces:
