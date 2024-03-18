@@ -8,5 +8,14 @@ Installs the Kube-Prometheus monitoring stack, a collection of Kubernetes manife
 
 More on https://github.com/prometheus-operator/kube-prometheus
 
+### Credentials
+* Username: admin
+* Password: *password you entered in the configuration*
+
+## Known Issues
+Grafana is accessible only with 'monitoring-grafana' subdomain if not using specific HTTProute (as pagenotfound does).
+
+Possible fix: use specified httproute definition
+
 ### Available on
 * https://monitoring-grafana.yourdomain.com
