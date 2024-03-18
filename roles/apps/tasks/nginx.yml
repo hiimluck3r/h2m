@@ -9,6 +9,7 @@
   set_fact:
     strip_path: true
     app: nginx
+    domain: example1.com
     http_port: 8000
 
 - name: Render nginx manifests

@@ -9,6 +9,7 @@
   set_fact:
     strip_path: true
     app: castopod
+    domain: example1.com
     http_port: 8007
 
 - name: Render castopod manifests

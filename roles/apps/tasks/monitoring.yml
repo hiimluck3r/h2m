@@ -9,6 +9,7 @@
   set_fact:
     strip_path: true
     app: monitoring-grafana
+    domain: example1.com
     http_port: 8005
 
 - name: Add prometheus-community helm repo

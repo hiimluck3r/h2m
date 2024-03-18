@@ -15,6 +15,7 @@
   set_fact:
     strip_path: false
     app: kavita
+    domain: example1.com
     http_port: 8006
 
 - name: Add truecharts helm repo

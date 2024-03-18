@@ -119,7 +119,7 @@
     con_mode: https
   when: https|default(false)|bool == true
 
-- name: Render Kong Gateway manifest
+- name: Render Kong Gateway manifest #REDACT TO ADD FUNCTIONALITY FOR MULTIPLE DOMAINS
   template:
     src: 'roles/init/manifests/kong/{{ con_mode }}-kong-gateway.yaml'
     dest: '~/manifests/kong-gateway.yaml'

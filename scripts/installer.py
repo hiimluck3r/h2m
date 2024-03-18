@@ -27,9 +27,15 @@ Created by @hiimluck3r
 https://github.com/hiimluck3r/h2m[/blue]
 """)
 
+domains = []
 console.print("*Username is used for managing nodes and for different services.")
 user = input("Enter your username: ")
-domain = input("Enter domain of the cluster: ")
+if confirm("\nDo you want to use a single domain?"):
+    domains[0] = input("Enter domain of the cluster: ")
+else:
+    domain_count = int(input("How many domains do you want to use? "))
+    for i in range(domain_count):
+        domains.append(input(f"Enter domain #{i}: "))
 email = input("Enter your email: ")
 console.print("""[red]
     ***
@@ -47,7 +53,7 @@ while True:
         break
 
 print(f"\nUser: {user}")
-print(f"Domain: {domain}")
+print(f"Domains: {domains}")
 print(f"E-mail: {email}")
 
 confirmation = input("Proceed? (y/n): ")
@@ -134,6 +140,7 @@ if confirm("\nUse HTTPS? For HTTPS connection you will need CloudFlare API Token
     ***
     DNS01 challenge creates temporary DNS-record to confirm than you are domain's owner.
     The only supported provider (at least for now) is CloudFlare.
+    If you are using multiple domains, make sure all of them are proxied within single account accessible with the following API.             
 
     To create CloudFlare API token:
     1. Go to User Profile (My Profile)
@@ -151,6 +158,12 @@ Enter CloudFlare API token:
         production_https = 'true'
 else:
     cloudflare_token = ''
+
+def get_domains(domains):
+    result = ""
+    for domain in domains:
+        result+=f'   - {domain}\n'
+    return result
 
 newline = '\n'
 
@@ -196,7 +209,8 @@ with open("../group_vars/all/h2mcfg.yml", 'w') as sys_file:
 production_https: {production_https}
 cp_vip: {cp_vip} #Control-plane Virtual IP
 cidr_global: {cidr_global} #CIDR-based kube-vip LoadBalancer IP range
-domain: {domain}
+domains:
+{get_domains(domains)}
 user: {user}
 kube_vip_interface: {kube_vip_interface}
 kube_vip_version: v0.6.4

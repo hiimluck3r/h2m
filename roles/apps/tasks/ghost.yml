@@ -8,6 +8,7 @@
 - name: Set app and port variables for ghost app
   set_fact:
     app: ghost
+    domain: example1.com
     http_port: 80 #the only valid port for ghost installation is 80, otherwise it gets rewritten
 
 - name: Deploy ghost with Helm

@@ -9,6 +9,7 @@
   set_fact:
     strip_path: true
     app: nextcloud
+    domain: example1.com
     http_port: 8004
 
 - name: Add NextCloud helm repo
