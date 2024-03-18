@@ -8,7 +8,7 @@ metadata:
 spec:
   gatewayClassName: kong
   listeners:
-  - name: http-1
+  - name: "{{ item }}-http-1"
     port: 80
     hostname: "*.{{ item }}"
     protocol: HTTP
@@ -16,7 +16,7 @@ spec:
       namespaces:
         from: All
 
-  - name: http-2
+  - name: http-"{{ item }}-http-2"
     port: 80
     hostname: "{{ item }}"
     protocol: HTTP
@@ -24,7 +24,7 @@ spec:
       namespaces:
         from: All
 
-  - name: https-1
+  - name: "{{ item }}-https-1"
     port: 443
     hostname: "*.{{ item }}"
     protocol: HTTPS
@@ -34,11 +34,11 @@ spec:
     tls:
       mode: Terminate
       certificateRefs:
-        - name: wildcard-tls
+        - name: "{{ item }}-wildcard-tls"
           kind: Secret
           group: core
   
-  - name: https-2
+  - name: "{{ item }}-https-1"
     port: 443
     hostname: "{{ item }}"
     protocol: HTTPS
@@ -48,6 +48,6 @@ spec:
     tls:
       mode: Terminate
       certificateRefs:
-        - name: domain-tls
+        - name: "{{ item }}-domain-tls"
           kind: Secret
           group: core
