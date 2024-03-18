@@ -7,8 +7,8 @@
 
 - name: Upload upload_book.sh script
   copy:
-    src: "{{ role_path }}/files/kavita/upload_books.sh"
-    dest: ~/manifests/kavita/upload_books.sh
+    src: "{{ role_path }}/files/kavita/upload_book.sh"
+    dest: ~/manifests/kavita/upload_book.sh
   when: kavita|default(false)|bool == true
 
 - name: Set app and port variables for kavita app
