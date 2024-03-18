@@ -7,7 +7,7 @@
 
 - name: Upload upload_book.sh script
   copy:
-    src: upload_books.sh
+    src: "{{ role_path }}/files/upload_books.sh"
     dest: ~/manifests/kavita/upload_books.sh
     remote_src: yes
   when: kavita|default(false)|bool == true
