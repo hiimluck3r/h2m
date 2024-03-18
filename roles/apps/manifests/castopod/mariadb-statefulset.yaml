@@ -22,13 +22,19 @@ spec:
           name: cp-db-port
         env:
         - name: MARIADB_ROOT_PASSWORD
-          value: {{ castopod_mysql_password }}
+          valueFrom:
+            secretKeyRef:
+              name: castopod
+              key: mysql_password
         - name: MARIADB_DATABASE
           value: castopod
         - name: MARIADB_USER
           value: castopod
         - name: MARIADB_PASSWORD
-          value: {{ castopod_mysql_password }}
+          valueFrom:
+            secretKeyRef:
+              name: castopod
+              key: mysql_password
         volumeMounts:
         - name: data
           mountPath: /var/lib/mysql
