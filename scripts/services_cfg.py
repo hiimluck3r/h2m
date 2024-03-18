@@ -56,8 +56,8 @@ for each in services:
             task_data = task_file.read()
         
         current_domain = re.findall(r'domain: .*', task_data)[0]
-        print(f'Current domain for {each['name']} service: {current_domain}')
-        print(f'Configure domain for {each['name']} service: ')
+        print(f'Current domain for {each["name"]} service: {current_domain}')
+        print(f'Configure domain for {each["name"]} service: ')
         domain = select_multiple(config_info['domains'], tick_character='x', maximal_count=1, ticked_indices=[0])
         domain = domain[0]
         task_data = task_data.replace(current_domain, f'domain: {domain}')
