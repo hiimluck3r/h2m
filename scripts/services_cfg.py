@@ -58,8 +58,7 @@ for each in services:
         current_domain = re.findall(r'domain: .*', task_data)[0]
         print(f'Current {each["name"]} service {current_domain}')
         print(f'Configure domain for {each["name"]} service: ')
-        domain = select_multiple(config_info['domains'], tick_character='x', maximal_count=1, ticked_indices=[0])
-        domain = domain[0]
+        domain = select(config_info['domains'], cursor='>')
         task_data = task_data.replace(current_domain, f'domain: {domain}')
         
         with open(f"../roles/apps/tasks/{each['name']}.yml", 'w') as task_file:

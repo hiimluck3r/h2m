@@ -9,7 +9,7 @@
   set_fact:
     strip_path: true
     app: pagenotfound
-    domain: example1.com
+    domain: third.com
     http_port: 404
 
 - name: Render pagenotfound manifests
