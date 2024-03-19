@@ -31,7 +31,7 @@ domains = []
 console.print("*Username is used for managing nodes and for different services.")
 user = input("Enter your username: ")
 if confirm("\nDo you want to use a single domain?"):
-    domains[0] = input("Enter domain of the cluster: ")
+    domains.append(input("Enter domain of the cluster: "))
 else:
     domain_count = int(input("How many domains do you want to use? "))
     for i in range(domain_count):
