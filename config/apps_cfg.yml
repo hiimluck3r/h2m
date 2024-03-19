@@ -30,3 +30,8 @@ monitoring_subdomain: monitoring-grafana #the only one that is usable, can be fi
 
 #pagenotfound
 pagenotfound_subdomain: '*'
+
+#Homarr
+homarr_subdomain: homarr
+
+#gitlab-runner

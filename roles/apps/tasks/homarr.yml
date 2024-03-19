@@ -1,0 +1,72 @@
+f---
+- name: Create ~/manifests/homarr directory if not exists
+  file:
+    path: "~/manifests/homarr"
+    state: directory
+  when: homarr|default(false)|bool == true
+
+- name: Set app and port variables for homarr app
+  set_fact:
+    app: "{{ homarr_subdomain }}"
+    domain: example1.com
+    http_port: 8099
+
+- name: Add oben01 helm repo
+  kubernetes.core.helm_repository:
+    name: oben01
+    repo_url: "https://oben01.github.io/charts/"
+  when: homarr|default(false)|bool == true
+
+- name: Deploy homarr with Helm
+  kubernetes.core.helm:
+    name: homarr
+    state: present
+    chart_ref: oben01/homarr
+    release_namespace: default
+    values:
+      replicaCount: 1
+      env:
+        TZ: "{{ TZ }}"
+        DEFAULT_COLOR_SCHEME: "dark"
+        AUTH_PROVIDER: "credentials"
+      service:
+        port: "{{ http_port }}"
+      ingress:
+        enabled: false
+      persistence:
+        enabled: false
+  when: homarr|default(false)|bool == true
+
+- name: Render homarr HTTPRoute manifest
+  template:
+    src: "roles/apps/templates/{{ item }}.yaml.j2"
+    dest: "~/manifests/homarr/{{ item }}.yaml"
+    owner: "{{ user }}"
+    mode: '0644'
+  with_list:
+    - "httproute"
+  when: homarr|default(false)|bool == true
+
+- name: Apply HTTPRoute to homarr
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    src: "~/manifests/homarr/{{ item }}.yaml"
+  with_list:
+    - "httproute"
+  when: homarr|default(false)|bool == true
+
+- name: Remove homarr with helm
+  kubernetes.core.helm:
+    name: homarr
+    state: absent
+    release_namespace: default
+  when: homarr|default(false)|bool == false
+
+- name: Remove homarr HTTPRoute
+  kubernetes.core.k8s:
+    name: "{{ app }}"
+    state: absent
+    kind: HTTPRoute
+    namespace: default
+  when: homarr|default(false)|bool == false
