@@ -1,0 +1,74 @@
+---
+- name: Create ~/manifests/dashdot directory if not exists
+  file:
+    path: "~/manifests/dashdot"
+    state: directory
+  when: dashdot|default(false)|bool == true
+
+- name: Set app and port variables for dashdot app
+  set_fact:
+    app: "{{ dashdot_subdomain }}"
+    domain: example1.com
+    http_port: 3001
+
+- name: Deploy dashdot with Helm
+  kubernetes.core.helm:
+    name: dashdot
+    state: present
+    chart_ref: oci://ghcr.io/oben01/charts/dashdot
+    release_namespace: default
+    chart_version: 1.0.5
+    values:
+      replicaCount: 1
+      env:
+        TZ: "{{ TZ }}"
+        DASHDOT_SHOW_HOST: "{{ DASHDOT_SHOW_HOST }}"
+        DASHDOT_SHOW_VERSION: "{{ DASHDOT_SHOW_VERSION }}"
+        DASHDOT_ENABLE_CPU_TEMPS: "{{ DASHDOT_ENABLE_CPU_TEMPS }}"
+        DASHDOT_PAGE_TITLE: "{{ DASHDOT_PAGE_TITLE }}"
+        DASHDOT_WIDGET_LIST: "{{ DASHDOT_WIDGET_LIST }}"
+        DASHDOT_OS_LABEL_LIST: "{{ DASHDOT_OS_LABEL_LIST }}"
+        DASHDOT_CPU_LABEL_LIST: "{{ DASHDOT_CPU_LABEL_LIST }}"
+        DASHDOT_STORAGE_LABEL_LIST: "{{ DASHDOT_STORAGE_LABEL_LIST }}"
+        DASHDOT_RAM_LABEL_LIST: "{{ DASHDOT_RAM_LABEL_LIST }}"
+        DASHDOT_NETWORK_LABEL_LIST: "{{ DASHDOT_NETWORK_LABEL_LIST }}"
+        DASHDOT_GPU_LABEL_LIST: "{{ DASHDOT_GPU_LABEL_LIST }}"
+      service:
+        port: "{{ http_port }}"
+      ingress:
+        enabled: false
+  when: dashdot|default(false)|bool == true
+
+- name: Render dashdot HTTPRoute manifest
+  template:
+    src: "roles/apps/templates/{{ item }}.yaml.j2"
+    dest: "~/manifests/dashdot/{{ item }}.yaml"
+    owner: "{{ user }}"
+    mode: '0644'
+  with_list:
+    - "httproute"
+  when: dashdot|default(false)|bool == true
+
+- name: Apply HTTPRoute to dashdot
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    src: "~/manifests/dashdot/{{ item }}.yaml"
+  with_list:
+    - "httproute"
+  when: dashdot|default(false)|bool == true
+
+- name: Remove dashdot with helm
+  kubernetes.core.helm:
+    name: dashdot
+    state: absent
+    release_namespace: default
+  when: dashdot|default(false)|bool == false
+
+- name: Remove dashdot HTTPRoute
+  kubernetes.core.k8s:
+    name: "{{ app }}"
+    state: absent
+    kind: HTTPRoute
+    namespace: default
+  when: dashdot|default(false)|bool == false

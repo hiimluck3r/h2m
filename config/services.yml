@@ -7,4 +7,4 @@ nginx: OFF | httpserver
 apache: OFF | httpserver
 monitoring: OFF | Prometheus and Grafana
 castopod: OFF | Selfhost your podcast
-homarr: OFF | Your homelab dashboard
+dashdot: OFF | Your homelab dashboard

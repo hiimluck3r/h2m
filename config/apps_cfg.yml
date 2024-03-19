@@ -31,7 +31,18 @@ monitoring_subdomain: monitoring-grafana #the only one that is usable, can be fi
 #pagenotfound
 pagenotfound_subdomain: '*'
 
-#Homarr
-homarr_subdomain: homarr
+#dashdot
+dashdot_subdomain: dashdot
+DASHDOT_SHOW_HOST: false
+DASHDOT_SHOW_VERSION: true
+DASHDOT_ENABLE_CPU_TEMPS: false
+DASHDOT_PAGE_TITLE: "dashdot."
+DASHDOT_WIDGET_LIST: "os,cpu,storage,ram,network" #gpu is also available
+DASHDOT_OS_LABEL_LIST: "os,arch,up_since"
+DASHDOT_CPU_LABEL_LIST: "brand,model,cores,threads,frequency"
+DASHDOT_STORAGE_LABEL_LIST: "brand,size,type"
+DASHDOT_RAM_LABEL_LIST: "brand,size,type,frequency"
+DASHDOT_NETWORK_LABEL_LIST: "type,speed_up,speed_down,interface_speed"
+DASHDOT_GPU_LABEL_LIST: "brand, model, memory"
 
 #gitlab-runner
