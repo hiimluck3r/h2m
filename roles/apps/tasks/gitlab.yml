@@ -1,0 +1,62 @@
+---
+- name: Create ~/manifests/gitlab directory if not exists
+  file:
+    path: "~/manifests/gitlab"
+    state: directory
+  when: gitlab|default(false)|bool == true
+
+- name: Set app and port variables for gitlab app
+  set_fact:
+    app: "{{ gitlab_subdomain }}"
+    domain: example1.com
+    http_port: 8181
+
+- name: Add GitLab helm repo
+  kubernetes.core.helm_repository:
+    name: gitlab
+    repo_url: "https://charts.gitlab.io"
+  when: gitlab|default(false)|bool == true
+
+- name: Deploy gitlab with Helm
+  kubernetes.core.helm:
+    name: gitlab
+    state: present
+    chart_ref: gitlab/gitlab
+    release_namespace: default
+    chart_version: 7.5.2
+    values: "{{ lookup('template', 'gitlab-values.yaml.j2') | from_yaml }}"
+  when: gitlab|default(false)|bool == true
+
+- name: Render gitlab HTTPRoute manifest
+  template:
+    src: "roles/apps/templates/{{ item }}.yaml.j2"
+    dest: "~/manifests/gitlab/{{ item }}.yaml"
+    owner: "{{ user }}"
+    mode: '0644'
+  with_list:
+    - "httproute"
+  when: gitlab|default(false)|bool == true
+
+- name: Apply HTTPRoute to gitlab
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    src: "~/manifests/gitlab/{{ item }}.yaml"
+  with_list:
+    - "httproute"
+  when: gitlab|default(false)|bool == true
+
+- name: Remove gitlab with helm
+  kubernetes.core.helm:
+    name: gitlab
+    state: absent
+    release_namespace: default
+  when: gitlab|default(false)|bool == false
+
+- name: Remove gitlab HTTPRoute
+  kubernetes.core.k8s:
+    name: "{{ app }}"
+    state: absent
+    kind: HTTPRoute
+    namespace: default
+  when: gitlab|default(false)|bool == false

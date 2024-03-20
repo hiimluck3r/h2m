@@ -100,4 +100,6 @@ homepage_bookmarks_yaml: |
           href: https://github.com/hiimluck3r
           description: "hiimluck3r's GitHub"
 
-#gitlab-runner
+#gitlab
+gitlab_subdomain: gitlab
+gitlab_runner_enabled: true
