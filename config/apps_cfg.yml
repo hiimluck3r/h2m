@@ -71,14 +71,14 @@ homepage_services_yaml: |
     - My First Service:
         href: http://localhost/
         description: Homepage is awesome
-    - Media:
-      - My Second Service:
-          href: http://localhost/
-          description: Homepage is the best
-    - Infra:
-      - My Third Service:
-          href: http://localhost/
-          description: Homepage is 😎
+  - Media:
+    - My Second Service:
+        href: http://localhost/
+        description: Homepage is the best
+  - Infra:
+    - My Third Service:
+        href: http://localhost/
+        description: Homepage is cool
 
 homepage_bookmarks_yaml: |
   ---
