@@ -63,3 +63,9 @@ nginx-ingress:
 
 gitlab-runner:
   enabled: {{ gitlab_runner_enabled }}
+
+certmanager:
+  installCRDs: false
+  install: false
+  rbac:
+    create: false
