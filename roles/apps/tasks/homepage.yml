@@ -33,10 +33,14 @@
       configmap:
         config:
           data:
-            settings.yaml: "{{ homepage_settings_yaml }}"
-            widgets.yaml: "{{ homepage_widgets_yaml }}"
-            services.yaml: "{{ homepage_services_yaml }}"
-            bookmarks.yaml: "{{ homepage_bookmarks_yaml }}"
+            settings.yaml: |
+              "{{ homepage_settings_yaml | to_yaml }}"
+            widgets.yaml: |
+              "{{ homepage_widgets_yaml | to_yaml }}"
+            services.yaml: |
+              "{{ homepage_services_yaml | to_yaml }}"
+            bookmarks.yaml: |
+              "{{ homepage_bookmarks_yaml | to_yaml }}"
             rbac:
               main:
                 rules:

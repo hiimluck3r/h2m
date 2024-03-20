@@ -46,45 +46,35 @@ DASHDOT_NETWORK_LABEL_LIST: "type,speed_up,speed_down,interface_speed"
 DASHDOT_GPU_LABEL_LIST: "brand, model, memory"
 
 #homepage
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/settings
 homepage_subdomain: homepage
 homepage_settings_yaml: |
   ---
-  # For configuration options and examples, please see:
-  # https://gethomepage.dev/latest/configs/settings
-
   providers:
     openweathermap: openweathermapapikey
     weatherapi: weatherapiapikey
 
 homepage_widgets_yaml: |
   ---
-  # For configuration options and examples, please see:
-  # https://gethomepage.dev/latest/configs/widgets
-
   - resources:
       cpu: true
       memory: true
       disk: /
-
   - search:
       provider: duckduckgo
       target: _blank
 
 homepage_services_yaml: |
   ---
-  # For configuration options and examples, please see:
-  # https://gethomepage.dev/latest/configs/services
-
   - Arr:
     - My First Service:
         href: http://localhost/
         description: Homepage is awesome
-
     - Media:
       - My Second Service:
           href: http://localhost/
           description: Homepage is the best
-
     - Infra:
       - My Third Service:
           href: http://localhost/
@@ -92,24 +82,18 @@ homepage_services_yaml: |
 
 homepage_bookmarks_yaml: |
   ---
-  # For configuration options and examples, please see:
-  # https://gethomepage.dev/latest/configs/bookmarks
-
   - Developer:
       - Github:
           - abbr: GH
             href: https://github.com/
-
   - Social:
       - Reddit:
           - abbr: RE
             href: https://reddit.com/
-
   - Entertainment:
       - YouTube:
           - abbr: YT
             href: https://youtube.com/
-
   - Hiimluck3r:
       - Github:
         - abbr: GH
