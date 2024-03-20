@@ -9,4 +9,4 @@ monitoring: OFF | Prometheus and Grafana
 castopod: OFF | Selfhost your podcast
 dashdot: OFF | Your homelab server resources dashboard
 homepage: OFF | Your homelab services dashboard
-gitlab: OFF | git-based DevOps platform
+#gitlab: OFF | git-based DevOps platform
