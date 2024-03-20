@@ -1,0 +1,101 @@
+---
+- name: Create ~/manifests/homepage directory if not exists
+  file:
+    path: "~/manifests/homepage"
+    state: directory
+  when: homepage|default(false)|bool == true
+
+- name: Set app and port variables for homepage app
+  set_fact:
+    app: "{{ homepage_subdomain }}"
+    domain: example1.com
+    http_port: 10352
+
+- name: Add truecharts helm repo
+  kubernetes.core.helm_repository:
+    name: truecharts
+    repo_url: "https://charts.truecharts.org"
+  when: homepage|default(false)|bool == true
+
+- name: Deploy homepage with Helm
+  kubernetes.core.helm:
+    name: homepage
+    state: present
+    chart_ref: truecharts/homepage
+    release_namespace: default
+    chart_version: 7.5.2
+    values:
+      service:
+        main:
+          ports:
+            port: "{{ http_port }}"
+      configmap:
+        config:
+          data:
+            settings.yaml: "{{ homepage_settings_yaml }}"
+            widgets.yaml: "{{ homepage_widgets_yaml }}"
+            services.yaml: "{{ homepage_services_yaml }}"
+            bookmarks.yaml: "{{ homepage_bookmarks_yaml }}"
+            rbac:
+              main:
+                rules:
+                  - apiGroups:
+                      - ""
+                    resources:
+                      - namespaces
+                      - pods
+                      - nodes
+                    verbs:
+                      - get
+                      - list
+                  - apiGroups:
+                      - extensions
+                      - networking.k8s.io
+                      - gateway.networking.k8s.io
+                    resources:
+                      - ingresses
+                      - httproute
+                    verbs:
+                      - get
+                      - list
+                  - apiGroups:
+                      - apiextensions.k8s.io
+                    resources:
+                      - customresourcedefinitions/status
+                    verbs:
+                      - get
+  when: homepage|default(false)|bool == true
+
+- name: Render homepage HTTPRoute manifest
+  template:
+    src: "roles/apps/templates/{{ item }}.yaml.j2"
+    dest: "~/manifests/homepage/{{ item }}.yaml"
+    owner: "{{ user }}"
+    mode: '0644'
+  with_list:
+    - "httproute"
+  when: homepage|default(false)|bool == true
+
+- name: Apply HTTPRoute to homepage
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    src: "~/manifests/homepage/{{ item }}.yaml"
+  with_list:
+    - "httproute"
+  when: homepage|default(false)|bool == true
+
+- name: Remove homepage with helm
+  kubernetes.core.helm:
+    name: homepage
+    state: absent
+    release_namespace: default
+  when: homepage|default(false)|bool == false
+
+- name: Remove homepage HTTPRoute
+  kubernetes.core.k8s:
+    name: "{{ app }}"
+    state: absent
+    kind: HTTPRoute
+    namespace: default
+  when: homepage|default(false)|bool == false
