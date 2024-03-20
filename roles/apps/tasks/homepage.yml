@@ -24,51 +24,7 @@
     chart_ref: truecharts/homepage
     release_namespace: default
     chart_version: 7.5.2
-    values:
-      service:
-        main:
-          ports:
-            main:
-              port: "{{ http_port }}"
-      configmap:
-        config:
-          data:
-            settings.yaml: |
-              "{{ homepage_settings_yaml | to_yaml }}"
-            widgets.yaml: |
-              "{{ homepage_widgets_yaml | to_yaml }}"
-            services.yaml: |
-              "{{ homepage_services_yaml | to_yaml }}"
-            bookmarks.yaml: |
-              "{{ homepage_bookmarks_yaml | to_yaml }}"
-            rbac:
-              main:
-                rules:
-                  - apiGroups:
-                      - ""
-                    resources:
-                      - namespaces
-                      - pods
-                      - nodes
-                    verbs:
-                      - get
-                      - list
-                  - apiGroups:
-                      - extensions
-                      - networking.k8s.io
-                      - gateway.networking.k8s.io
-                    resources:
-                      - ingresses
-                      - httproute
-                    verbs:
-                      - get
-                      - list
-                  - apiGroups:
-                      - apiextensions.k8s.io
-                    resources:
-                      - customresourcedefinitions/status
-                    verbs:
-                      - get
+    values: "{{ lookup('template', 'homepage-values.yaml.j2') | from_yaml }}"
   when: homepage|default(false)|bool == true
 
 - name: Render homepage HTTPRoute manifest
