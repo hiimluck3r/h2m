@@ -28,7 +28,8 @@
       service:
         main:
           ports:
-            port: "{{ http_port }}"
+            main:
+              port: "{{ http_port }}"
       configmap:
         config:
           data:
