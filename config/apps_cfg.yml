@@ -103,3 +103,5 @@ homepage_bookmarks_yaml: |
 #gitlab
 gitlab_subdomain: gitlab
 gitlab_runner_enabled: true
+
+#gitlab-runner

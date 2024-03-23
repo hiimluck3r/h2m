@@ -1,0 +1,23 @@
+---
+- name: Add gitlab helm repo
+  kubernetes.core.helm_repository:
+    name: gitlab-runner
+    repo_url: "https://charts.gitlab.io"
+  when: gitlab-runner|default(false)|bool == true
+
+- name: Deploy gitlab-runner with Helm
+  kubernetes.core.helm:
+    name: gitlab-runner
+    state: present
+    chart_ref: gitlab/gitlab-runner
+    release_namespace: default
+    chart_version: 0.63.0
+    values: "{{ lookup('template', 'gitlab-runner-values.yaml.j2') | from_yaml }}"
+  when: gitlab-runner|default(false)|bool == true
+
+- name: Remove gitlab-runner with helm
+  kubernetes.core.helm:
+    name: gitlab-runner
+    state: absent
+    release_namespace: default
+  when: gitlab-runner|default(false)|bool == false
