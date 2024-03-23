@@ -5,19 +5,27 @@
     repo_url: "https://charts.gitlab.io"
   when: gitlab-runner|default(false)|bool == true
 
+- name: Set app and port variables for gitlab app
+  set_fact:
+    app: "gitlab-runners"
+    domain: thiswillbe.ignored
+    http_port: 1000
+
 - name: Deploy gitlab-runner with Helm
   kubernetes.core.helm:
-    name: gitlab-runner
+    name: "{{ item.split('|')[0] }}-gitlab-runner"
     state: present
     chart_ref: gitlab/gitlab-runner
     release_namespace: default
     chart_version: 0.63.0
     values: "{{ lookup('template', 'gitlab-runner-values.yaml.j2') | from_yaml }}"
+  loop: "{{ runners|flatten(levels=1) }}"
   when: gitlab-runner|default(false)|bool == true
 
 - name: Remove gitlab-runner with helm
   kubernetes.core.helm:
-    name: gitlab-runner
+    name: "{{ item.split('|')[0] }}-gitlab-runner"
     state: absent
     release_namespace: default
+  loop: "{{ runners|flatten(levels=1) }}"
   when: gitlab-runner|default(false)|bool == false

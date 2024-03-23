@@ -105,3 +105,7 @@ gitlab_subdomain: gitlab
 gitlab_runner_enabled: true
 
 #gitlab-runner
+runners:
+   - project1|TOKEN1
+   - project2|TOKEN2
+   - project3|TOKEN3

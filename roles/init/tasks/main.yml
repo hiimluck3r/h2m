@@ -126,7 +126,7 @@
     owner: "{{ user }}"
     mode: '0644'
 
-- name: Render Kong Gateway manifest #REDACT TO ADD FUNCTIONALITY FOR MULTIPLE DOMAINS
+- name: Render Kong Gateway manifest
   template:
     src: 'roles/init/manifests/kong/{{ con_mode }}-kong-gateway.yaml'
     dest: '~/manifests/{{ item }}-kong-gateway.yaml'

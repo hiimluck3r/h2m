@@ -14,7 +14,7 @@
 
 ## The GitLab Server URL (with protocol) that want to register the runner against
 ## ref: https://docs.gitlab.com/runner/commands/index.html#gitlab-runner-register
-gitlabUrl: http://gitlab.your-domain.com/
+gitlabUrl: http://gitlab.com/
 replicas: 1
 
 ## For RBAC support:
@@ -25,7 +25,7 @@ rbac:
 ## be retrieved from your GitLab instance. It is the token of an already registered runner.
 ## ref: (we don't have docs for that yet, but we want to use an existing token)
 ##
-runnerToken: ""
+runnerToken: "{{ item.split('|')[1] }}"
 
 ## DEPRECATED: The Registration Token for adding new Runners to the GitLab Server.
 ##
@@ -203,7 +203,7 @@ sessionServer:
 ## ref: https://docs.gitlab.com/runner/monitoring/#configuration-of-the-metrics-http-server
 ##
 metrics:
-  enabled: false
+  enabled: true
 
   ## Define a name for the metrics port
   ##
@@ -217,7 +217,7 @@ metrics:
   ## the scraping target. Requires enabling the service resource below.
   ##
   serviceMonitor:
-    enabled: false
+    enabled: true
 
     ## Provide additional labels to the service monitor resource
     ##
@@ -647,12 +647,12 @@ volumes: []
 
 ## Array of extra K8s manifests to deploy
 ##
-{% raw %}
 extraObjects: []
  - apiVersion: external-secrets.io/v1beta1
    kind: ExternalSecret
    metadata:
-     name: 'gitlab-runner-secret'
+     name: 'gitlab-runner-secret-{{ item.split('|')[0] }}'
+{% raw %}
    spec:
      refreshInterval: 1h
      secretStoreRef:
