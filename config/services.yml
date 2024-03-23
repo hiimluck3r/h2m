@@ -9,5 +9,5 @@ monitoring: OFF | Prometheus and Grafana
 castopod: OFF | Selfhost your podcast
 dashdot: OFF | Your homelab server resources dashboard
 homepage: OFF | Your homelab services dashboard
-#gitlab: OFF | git-based DevOps platform
-gitlab-runner: OFF | Runner for GitLab
+gitlab: OFF | git-based DevOps platform
+gitlab_runner: OFF | Runner for GitLab
