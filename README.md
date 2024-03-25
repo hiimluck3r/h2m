@@ -17,6 +17,10 @@ Available set of applications:
 * Kavita
 * Ghost
 * Castopod
+* GitLab Runner
+* Dashdot
+* Homepage
+* PageNotFound
 
 And also monitoring with:
 
