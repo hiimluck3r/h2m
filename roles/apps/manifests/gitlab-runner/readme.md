@@ -10,7 +10,7 @@ GitLab Runner runs the CI/CD jobs that are defined in GitLab.
 More on https://docs.gitlab.com/runner/install/
 
 ### Credentials
-You need to provide the following information in config/apps_cfg.yml (to use as default) or in group_vars/all/h2mcfg.yml (for specific configuration):
+You need to provide the following information in `config/apps_cfg.yml` (to use as default) or in `group_vars/all/h2mcfg.yml` (for specific configuration):
 
 ```yaml
 #gitlab-runner
