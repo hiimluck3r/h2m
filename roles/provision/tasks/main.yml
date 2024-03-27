@@ -1,0 +1,166 @@
+---
+- name: Apply kube-vip-cloud-provider
+  kubernetes.core.k8s:
+    state: present
+    src: https://raw.githubusercontent.com/kube-vip/kube-vip-cloud-provider/main/manifest/kube-vip-cloud-controller.yaml
+
+- name: Apply ConfigMap with CIDR IP range for kube-vip-cloud-provider
+  kubernetes.core.k8s:
+    state: present
+    definition:
+      apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: kubevip
+        namespace: kube-system
+      data:
+        cidr-global: "{{ cidr_global }}"
+
+- name: Create ~/manifests/cert-manager directory if not exists
+  file:
+    path: "~/manifests/cert-manager"
+    state: directory
+  when: https|default(false)|bool == true
+
+- name: Add helm cert-manager jetstack repo
+  shell: helm repo add jetstack https://charts.jetstack.io --force-update && helm repo update
+
+- name: Set staging Let's Encrypt server for cert-manager
+  set_fact:
+    server: https://acme-staging-v02.api.letsencrypt.org/directory
+  when: production_https|default(false)|bool == false
+
+- name: Set production Let's Encrypt server for cert-manager
+  set_fact:
+    server: https://acme-v02.api.letsencrypt.org/directory
+  when: production_https|default(false)|bool == true
+
+- name: Render cert-manager manifests
+  template:
+    src: 'roles/init/manifests/cert-manager/{{ item }}.yaml'
+    dest: '~/manifests/cert-manager/{{ item }}.yaml'
+    owner: "{{ user }}"
+    mode: '0644'
+  with_list:
+    - api_token
+    - cluster-issuer
+  when: https|default(false)|bool == true
+
+- name: Create cert-manager namespace
+  kubernetes.core.k8s:
+    api_version: v1
+    kind: Namespace
+    name: cert-manager
+    state: present
+
+- name: Create CloudFlare API Token secret
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    src: "~/manifests/cert-manager/api_token.yaml"
+  when: https|default(false)|bool == true
+
+- name: Install cert-manager
+  kubernetes.core.helm:
+    state: present
+    name: cert-manager
+    chart_ref: jetstack/cert-manager
+    release_namespace: cert-manager
+    create_namespace: true
+    chart_version: 1.14.2
+    values:
+      installCRDs: true
+      replicaCount: 1
+      extraArgs:
+        - "--feature-gates=ExperimentalGatewayAPISupport=true"
+  when: https|default(false)|bool == true
+
+- name: Install cert-manager cluster-issuer
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    src: "~/manifests/cert-manager/cluster-issuer.yaml"
+  when: https|default(false)|bool == true
+
+- name: Delete cert-manager api token secret an cluster-issuer
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    src: "~/manifests/cert-manager/{{ item }}.yaml"
+  with_list:
+    - api_token
+    - cluster-issuer
+  when: https|default(false)|bool == false
+
+- name: Remove cert-manager
+  kubernetes.core.helm:
+    name: cert-manager
+    release_namespace: cert-manager
+    state: absent
+  when: https|default(false)|bool == false
+
+- name: Install Kong Ingress Controller CRD
+  kubernetes.core.k8s:
+    state: present
+    src: https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.0.0/standard-install.yaml
+
+- name: Set Kong Gateway to HTTP
+  set_fact:
+    con_mode: http
+  when: https|default(false)|bool == false
+
+- name: Set Kong Gateway to HTTPS
+  set_fact:
+    con_mode: https
+  when: https|default(false)|bool == true
+
+- name: Kong GatewayClass manifest
+  template:
+    src: 'roles/init/manifests/kong/kong-gatewayclass.yaml'
+    dest: '~/manifests/kong-gatewayclass.yaml'
+    owner: "{{ user }}"
+    mode: '0644'
+
+- name: Render Kong Gateway manifest
+  template:
+    src: 'roles/init/manifests/kong/{{ con_mode }}-kong-gateway.yaml'
+    dest: '~/manifests/{{ item }}-kong-gateway.yaml'
+    owner: "{{ user }}"
+    mode: '0644'
+  loop: "{{ domains|flatten(levels=1) }}"
+
+- name: Install Kong GatewayClass
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    src: "~/manifests/kong-gatewayclass.yaml"
+  
+- name: Install Kong Gateways
+  kubernetes.core.k8s:
+    state: present
+    namespace: default
+    src: "~/manifests/{{ item }}-kong-gateway.yaml"
+  loop: "{{ domains|flatten(levels=1) }}"
+
+- name: Add Kong helm chart
+  kubernetes.core.helm_repository:
+    name: kong
+    repo_url: "https://charts.konghq.com"
+
+#- name: Add necessary Helm charts
+#  shell: "helm repo add {{ item }}"
+#  with_list:
+#    - "kong https://charts.konghq.com"
+    #- "bitnami https://charts.bitnami.com/bitnami"
+    #- "nextcloud https://nextcloud.github.io/helm/" #alternative to using urls as chart_ref
+
+#- name: Update helm repositories
+#  shell: helm repo update
+
+- name: Install Kong
+  kubernetes.core.helm:
+    update_repo_cache: true
+    name: kong
+    chart_ref: kong/ingress
+    release_namespace: kong
+    create_namespace: true

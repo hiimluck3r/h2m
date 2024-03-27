@@ -39,4 +39,5 @@
 
   roles:
     - init
+    - provision
     - apps
