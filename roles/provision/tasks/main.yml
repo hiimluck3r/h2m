@@ -37,7 +37,7 @@
 
 - name: Render cert-manager manifests
   template:
-    src: 'roles/init/manifests/cert-manager/{{ item }}.yaml'
+    src: 'roles/provision/manifests/cert-manager/{{ item }}.yaml'
     dest: '~/manifests/cert-manager/{{ item }}.yaml'
     owner: "{{ user }}"
     mode: '0644'
@@ -82,7 +82,7 @@
     src: "~/manifests/cert-manager/cluster-issuer.yaml"
   when: https|default(false)|bool == true
 
-- name: Delete cert-manager api token secret an cluster-issuer
+- name: Delete cert-manager API TOKEN secret and cluster-issuer
   kubernetes.core.k8s:
     state: present
     namespace: default
@@ -117,14 +117,14 @@
 
 - name: Kong GatewayClass manifest
   template:
-    src: 'roles/init/manifests/kong/kong-gatewayclass.yaml'
+    src: 'roles/provision/manifests/kong/kong-gatewayclass.yaml'
     dest: '~/manifests/kong-gatewayclass.yaml'
     owner: "{{ user }}"
     mode: '0644'
 
 - name: Render Kong Gateway manifest
   template:
-    src: 'roles/init/manifests/kong/{{ con_mode }}-kong-gateway.yaml'
+    src: 'roles/provision/manifests/kong/{{ con_mode }}-kong-gateway.yaml'
     dest: '~/manifests/{{ item }}-kong-gateway.yaml'
     owner: "{{ user }}"
     mode: '0644'

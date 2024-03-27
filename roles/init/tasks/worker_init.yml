@@ -19,4 +19,4 @@
 - name: Add worker-node to k3s cluster
   shell: "{{ item }}"
   with_list:
-    - "k3sup join --ip {{ inventory_hostname }} --user {{ user }} --no-extras --server-ip {{ kube_vip_leader_ip }}"
+    - "k3sup join --ip {{ inventory_hostname }} --user {{ user }} --server-ip {{ kube_vip_leader_ip }}"
