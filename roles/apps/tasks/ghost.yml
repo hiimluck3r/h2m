@@ -3,7 +3,6 @@
   file:
     path: "~/manifests/ghost"
     state: directory
-  when: ghost|default(false)|bool == true
 
 - name: Set app and port variables for ghost app
   set_fact:
@@ -71,7 +70,6 @@
     mode: '0644'
   with_list:
     - "httproute"
-  when: ghost|default(false)|bool == true
 
 - name: Apply HTTPRoute to ghost
   kubernetes.core.k8s:

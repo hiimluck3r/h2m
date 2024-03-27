@@ -3,7 +3,6 @@
   file:
     path: "~/manifests/monitoring"
     state: directory
-  when: monitoring|default(false)|bool == true
 
 - name: Set app and port variables for grafana app
   set_fact:
@@ -50,7 +49,6 @@
     mode: '0644'
   with_list:
     - "httproute"
-  when: monitoring|default(false)|bool == true
 
 - name: Apply HTTPRoute to grafana
   kubernetes.core.k8s:

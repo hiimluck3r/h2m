@@ -3,7 +3,6 @@
   file:
     path: "~/manifests/dashdot"
     state: directory
-  when: dashdot|default(false)|bool == true
 
 - name: Set app and port variables for dashdot app
   set_fact:
@@ -47,7 +46,6 @@
     mode: '0644'
   with_list:
     - "httproute"
-  when: dashdot|default(false)|bool == true
 
 - name: Apply HTTPRoute to dashdot
   kubernetes.core.k8s:

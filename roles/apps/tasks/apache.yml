@@ -3,7 +3,6 @@
   file:
     path: "~/manifests/apache"
     state: directory
-  when: apache|default(false)|bool == true
 
 - name: Set app and port variables for apache app
   set_fact:
@@ -30,7 +29,6 @@
     mode: '0644'
   with_list:
     - "httproute"
-  when: apache|default(false)|bool == true
 
 - name: Install apache
   kubernetes.core.k8s:

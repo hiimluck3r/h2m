@@ -3,7 +3,6 @@
   file:
     path: "~/manifests/castopod"
     state: directory
-  when: castopod|default(false)|bool == true
 
 - name: Set app and port variables for castopod app
   set_fact:
@@ -37,7 +36,6 @@
     mode: '0644'
   with_list:
     - "httproute"
-  when: castopod|default(false)|bool == true
 
 - name: Install castopod
   kubernetes.core.k8s:

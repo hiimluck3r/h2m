@@ -3,7 +3,6 @@
   file:
     path: "~/manifests/nginx"
     state: directory
-  when: nginx|default(false)|bool == true
 
 - name: Set app and port variables for nginx app
   set_fact:
@@ -30,7 +29,6 @@
     mode: '0644'
   with_list:
     - "httproute"
-  when: nginx|default(false)|bool == true
 
 - name: Install nginx
   kubernetes.core.k8s:

@@ -3,7 +3,6 @@
   file:
     path: "~/manifests/littlelink"
     state: directory
-  when: littlelink|default(false)|bool == true
 
 - name: Set app and port variables for littlelink app
   set_fact:

@@ -3,7 +3,6 @@
   file:
     path: "~/manifests/kavita"
     state: directory
-  when: kavita|default(false)|bool == true
 
 - name: Upload upload_book.sh script
   copy:
@@ -67,7 +66,6 @@
     mode: '0644'
   with_list:
     - "httproute"
-  when: kavita|default(false)|bool == true
 
 - name: Apply HTTPRoute to kavita
   kubernetes.core.k8s:

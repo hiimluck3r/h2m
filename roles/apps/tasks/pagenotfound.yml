@@ -3,7 +3,6 @@
   file:
     path: "~/manifests/pagenotfound"
     state: directory
-  when: pagenotfound|default(false)|bool == true
 
 - name: Set app and port variables for pagenotfound app
   set_fact:

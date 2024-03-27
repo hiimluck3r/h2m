@@ -91,6 +91,7 @@
     - api_token
     - cluster-issuer
   when: https|default(false)|bool == false
+  ignore_errors: true
 
 - name: Remove cert-manager
   kubernetes.core.helm:

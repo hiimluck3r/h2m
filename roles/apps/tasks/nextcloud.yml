@@ -3,7 +3,6 @@
   file:
     path: "~/manifests/nextcloud"
     state: directory
-  when: nextcloud|default(false)|bool == true
 
 - name: Set app and port variables for nextcloud app
   set_fact:
@@ -79,7 +78,6 @@
     mode: '0644'
   with_list:
     - "httproute"
-  when: nextcloud|default(false)|bool == true
 
 - name: Apply HTTPRoute to nextcloud
   kubernetes.core.k8s:

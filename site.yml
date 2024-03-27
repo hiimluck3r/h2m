@@ -1,7 +1,5 @@
 ---
-- hosts: k3c
-  become: true
-  become_user: "{{ user }}"
+- hosts: all
   pre_tasks:
     - name: Populate service facts
       ansible.builtin.service_facts:
@@ -10,6 +8,7 @@
       ansible.builtin.apt:
         name: "python3-pip"
         state: present
+      become: true
 
     - name: Install pre-requisites
       ansible.builtin.pip:
@@ -39,5 +38,8 @@
 
   roles:
     - init
+
+- hosts: k3c
+  roles:
     - provision
     - apps

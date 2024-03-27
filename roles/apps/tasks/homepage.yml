@@ -3,7 +3,6 @@
   file:
     path: "~/manifests/homepage"
     state: directory
-  when: homepage|default(false)|bool == true
 
 - name: Set app and port variables for homepage app
   set_fact:
@@ -35,7 +34,6 @@
     mode: '0644'
   with_list:
     - "httproute"
-  when: homepage|default(false)|bool == true
 
 - name: Apply HTTPRoute to homepage
   kubernetes.core.k8s:
