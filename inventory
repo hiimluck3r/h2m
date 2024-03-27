@@ -4,7 +4,7 @@
 [quorum]
 
 
-[master]
+[master:children]
 leader
 quorum
 

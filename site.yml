@@ -1,6 +1,7 @@
 ---
-- hosts: cluster #change to all
-  
+- hosts: k3c
+  become: true
+  become_user: "{{ user }}"
   pre_tasks:
     - name: Populate service facts
       ansible.builtin.service_facts:
@@ -20,6 +21,7 @@
     - name: Check if helm exists
       ansible.builtin.command: "which helm"
       register: helm_res
+      ignore_errors: true
     
     - name: Install helm
       ansible.builtin.shell: "{{ item }}"

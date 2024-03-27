@@ -99,7 +99,7 @@ You can manually create VMs, pass ansible keys to it and use your settings or yo
 ```bash
 cd scripts
 
-./vm_templates.sh
+sudo ./vm_templates.sh
 ```
 
 After getting templates, go to your PVE dashboard and create full-clone virtual machine. You should also resize the virtual disk inside of GUI.

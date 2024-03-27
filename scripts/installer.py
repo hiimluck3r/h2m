@@ -174,7 +174,7 @@ with open("../inventory", "w") as inv_file:
 [quorum]
 {newline.join(master_nodes[1::])}
 
-[master]
+[master:children]
 leader
 quorum
 

@@ -2,6 +2,7 @@
 - name: Check if k3sup is installed on a cluster-node
   command: "which k3sup"
   register: k3sup_res
+  ignore_errors: true
   
 - name: Print k3sup_res.rc
   debug:

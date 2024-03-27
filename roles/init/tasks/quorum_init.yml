@@ -2,6 +2,7 @@
 - name: Check if k3sup is installed on a quorum-node
   command: "which k3sup"
   register: k3sup_res
+  ignore_errors: true
   
 - name: Print k3sup_res.rc
   debug:
@@ -18,6 +19,4 @@
 - name: Add quorum-node to k3s cluster
   shell: "{{ item }}"
   with_list:
-    - "k3sup install --local --user {{ user }} --no-extras --server-ip {{ kube_vip_leader_ip }} --server"
-    - "sudo chmod 644 ~/.kube/config"
-    - "sudo chown {{ user }}:{{ user }} ~/.kube/config"
+    - "k3sup join --local --user {{ user }} --no-extras --server-ip {{ kube_vip_leader_ip }} --server"
