@@ -4,6 +4,21 @@
     file: cluster_init.yml
   when: inventory_hostname in groups["cluster"]
 
+- name: Configurate leader-node for k3s cluster
+  ansible.builtin.import_tasks:
+    file: leader_init.yml
+  when: inventory_hostname in groups["leader"]
+
+- name: Configurate quorum-nodes for k3s cluster
+  ansible.builtin.import_tasks:
+    file: quorum_init.yml
+  when: inventory_hostname in groups["quorum"]
+
+- name: Configurate worker-nodes for k3s cluster
+  ansible.builtin.import_tasks:
+    file: worker_init.yml
+  when: inventory_hostname in groups["worker"]
+
 - name: Apply kube-vip-cloud-provider
   kubernetes.core.k8s:
     state: present

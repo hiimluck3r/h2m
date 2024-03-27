@@ -65,17 +65,11 @@ while True:
     console.print("""[yellow]
     ***
     Single-node: master and worker are on the same node
-    Multi-node: master and worker have different nodes | [red] Currently unavailable [/red]
+    Multi-node: master and worker have different nodes | [orange] Is being tested [/orange]
     ***[/yellow]
     """)
     cluster_mode = input("Will the k3s cluster be single-node or multi-node? (s/m): ")
     if cluster_mode in ["s", "m"]:
-        
-        #for now
-        if cluster_mode == "m":
-            print("Multi-node mode is currently unavailable.")
-            exit()
-
         break
     else:
         print('Use "s" for single-node or "m" for multi-node as an answer string.')
@@ -114,8 +108,11 @@ else:
             exit()
 
 cp_vip = "" #Control-plane Virtual IP
-if len(master_nodes) > 1:
-    cp_vip = input("Enter free IP that will be used for Control-Plane LoadBalancer. It must be different from the IPs you entered above: ")
+if len(master_nodes) >= 1:
+    while True:
+        cp_vip = input("Enter free IP that will be used for Control-Plane LoadBalancer. It must be different from the IPs you entered above: ")
+        if cp_vip not in master_nodes:
+            break
 
 #Service LoadBalancer IP range
 console.print("""[yellow]
@@ -207,7 +204,7 @@ with open("../group_vars/all/h2mcfg.yml", 'w') as sys_file:
     sys_file.write(f"""---
 #Cluster config
 production_https: {production_https}
-cp_vip: {cp_vip} #Control-plane Virtual IP
+kube_vip_leader_ip: {cp_vip} #Control-plane Virtual IP
 cidr_global: {cidr_global} #CIDR-based kube-vip LoadBalancer IP range
 domains:
 {get_domains(domains)}
