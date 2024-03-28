@@ -20,7 +20,6 @@
   file:
     path: "~/manifests/cert-manager"
     state: directory
-  when: https|default(false)|bool == true
 
 - name: Add helm cert-manager jetstack repo
   shell: helm repo add jetstack https://charts.jetstack.io --force-update && helm repo update

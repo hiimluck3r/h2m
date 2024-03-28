@@ -58,7 +58,7 @@
   roles:
     - init
 
-- hosts: k3c
+- hosts: leader, cluster
   roles:
     - provision
     - apps
