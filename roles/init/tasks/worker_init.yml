@@ -1,24 +1,5 @@
 ---
-- name: Check if k3sup is installed on a worker-node
-  command: "which k3sup"
-  register: k3sup_res
-  ignore_errors: true
-  
-- name: Print k3sup_res.rc
-  debug:
-    msg: "{{ k3sup_res.rc }}"
-
-- name: Install k3sup on a worker node and provide localhost ssh entry
-  shell: "{{ item }}"
-  with_list:
-    - "curl -sLS https://get.k3sup.dev | sh"
-    - "sudo install k3sup /usr/local/bin/"
-    - "ssh-keygen -t ed25519 -N '' -f ~/.ssh/localhost_key" #shit happened again
-    - "cat ~/.ssh/localhost_key.pub >> ~/.ssh/authorized_keys"
-  failed_when: k3sup_res.rc == 0
-  ignore_errors: true
-
 - name: Add worker-node to k3s cluster
   shell: "{{ item }}"
   with_list:
-    - "k3sup join --ip {{ inventory_hostname }} --user {{ user }} --server-ip {{ kube_vip_leader_ip }} --server-user {{ user }} --ssh-key ~/.ssh/localhost_key"
+    - "k3sup join --ip {{ inventory_hostname }} --user {{ user }} --server-ip {{ kube_vip_leader_ip }} --server-user {{ user }} --ssh-key ~/.ssh/ansible"
