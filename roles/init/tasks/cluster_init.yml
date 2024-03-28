@@ -6,6 +6,9 @@
 - name: Configure kubeconfig of a cluster
   shell: "{{ item }}"
   with_list:
+    - "mkdir -p ~/.kube/"
+    - "sudo chmod 644 /etc/rancher/k3s/k3s.yaml"
+    - "sudo chown {{ user }}:{{ user }} /etc/rancher/k3s/k3s.yaml"
     - "kubectl config view --raw > ~/.kube/config" #
     - "sudo chmod 644 ~/.kube/config"
     - "sudo chown {{ user }}:{{ user }} ~/.kube/config"
@@ -13,7 +16,7 @@
 - name: Change localhost to node IP
   shell: "sed -i 's|127.0.0.1|{{ inventory_hostname }}|' {{ item }}"
   with_list:
-    - "/etc/rancher/k3s/k3s.yaml"
+    #- "/etc/rancher/k3s/k3s.yaml"
     - "~/.kube/config"
 
 - name: Get cluster-node config
