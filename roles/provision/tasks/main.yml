@@ -44,7 +44,6 @@
   with_list:
     - api_token
     - cluster-issuer
-  when: https|default(false)|bool == true
 
 - name: Create cert-manager namespace
   kubernetes.core.k8s:
