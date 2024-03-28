@@ -19,7 +19,7 @@
 - name: Create a k3s cluster
   shell: "{{ item }}"
   with_list: #add a replica of kubeconfig to ~/.kube/config, look cluster_init.yml for example
-    - "mkdir -p ~/.kube/config"
+    - "mkdir -p ~/.kube/"
     - "k3sup install --local --user {{ user }} --no-extras --tls-san {{ kube_vip_leader_ip }} --cluster"
     - "sudo chmod 644 /etc/rancher/k3s/k3s.yaml"
     - "sudo chown {{ user }}:{{ user }} /etc/rancher/k3s/k3s.yaml"

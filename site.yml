@@ -1,4 +1,23 @@
 ---
+- hosts: localhost
+  tasks:
+    - name: Check if k3sup is installed
+      command: "which k3sup"
+      register: k3sup_res
+      ignore_errors: true
+      
+    - name: Print k3sup_res.rc
+      debug:
+        msg: "{{ k3sup_res.rc }}"
+
+    - name: Install k3sup
+      shell: "{{ item }}"
+      with_list:
+        - "curl -sLS https://get.k3sup.dev | sh"
+        - "sudo install k3sup /usr/local/bin/" 
+      failed_when: k3sup_res.rc == 0
+      ignore_errors: true
+
 - hosts: all
   pre_tasks:
     - name: Populate service facts
@@ -35,23 +54,6 @@
       ansible.builtin.file:
         path: "~/manifests"
         state: directory
-
-    - name: Check if k3sup is installed
-      command: "which k3sup"
-      register: k3sup_res
-      ignore_errors: true
-      
-    - name: Print k3sup_res.rc
-      debug:
-        msg: "{{ k3sup_res.rc }}"
-
-    - name: Install k3sup
-      shell: "{{ item }}"
-      with_list:
-        - "curl -sLS https://get.k3sup.dev | sh"
-        - "sudo install k3sup /usr/local/bin/" 
-      failed_when: k3sup_res.rc == 0
-      ignore_errors: true
 
   roles:
     - init
