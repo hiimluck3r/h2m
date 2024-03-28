@@ -3,3 +3,4 @@
   shell: "{{ item }}"
   with_list:
     - "k3sup join --ip {{ inventory_hostname }} --user {{ user }} --no-extras --server-ip {{ kube_vip_leader_ip }} --server --ssh-key ~/.ssh/ansible"
+  delegate_to: localhost
