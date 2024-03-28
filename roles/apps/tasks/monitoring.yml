@@ -1,7 +1,7 @@
 ---
 - name: Create ~/manifests/monitoring directory if not exists
   file:
-    path: "~/manifests/monitoring"
+    path: "~/manifests/grafana"
     state: directory
 
 - name: Set app and port variables for grafana app
