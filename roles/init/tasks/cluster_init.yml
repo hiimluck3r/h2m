@@ -6,9 +6,6 @@
 - name: Configure kubeconfig of a cluster
   shell: "{{ item }}"
   with_list:
-    - "mkdir -p ~/.kube/"
-    - "sudo chmod 644 /etc/rancher/k3s/k3s.yaml"
-    - "sudo chown {{ user }}:{{ user }} /etc/rancher/k3s/k3s.yaml"
     - "kubectl config view --raw > ~/.kube/config" #
     - "sudo chmod 644 ~/.kube/config"
     - "sudo chown {{ user }}:{{ user }} ~/.kube/config"
